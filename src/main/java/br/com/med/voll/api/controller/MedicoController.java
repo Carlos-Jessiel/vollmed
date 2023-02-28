@@ -2,6 +2,7 @@ package br.com.med.voll.api.controller;
 
 import br.com.med.voll.api.dto.medico.DadosCadastroMedicoDto;
 import br.com.med.voll.api.service.medico.MedicoService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,7 +17,7 @@ public class MedicoController {
     }
 
     @PostMapping
-    public ResponseEntity cadastrar(@RequestBody DadosCadastroMedicoDto dados){
+    public ResponseEntity cadastrar(@RequestBody @Valid DadosCadastroMedicoDto dados){
         return service.execute(dados);
     }
 
