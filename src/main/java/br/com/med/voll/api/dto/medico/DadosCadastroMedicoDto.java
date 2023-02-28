@@ -18,6 +18,9 @@ public record DadosCadastroMedicoDto(
         @Email
         String email,
         @NotBlank
+        @Pattern(regexp = "\\d{11}")
+        String telefone,
+        @NotBlank
         @Pattern(regexp = "\\d{4,6}")
         String crm,
         @NotNull
@@ -42,6 +45,7 @@ public record DadosCadastroMedicoDto(
         model.setNome(dados.nome);
         model.setCrm(dados.crm);
         model.setEmail(dados.email);
+        model.setTelefone(dados.telefone);
         model.setEndereco(modelEndereco);
         model.setEspecialidade(dados.especialidade);
 
