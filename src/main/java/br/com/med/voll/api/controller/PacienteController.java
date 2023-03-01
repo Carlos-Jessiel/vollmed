@@ -1,6 +1,5 @@
 package br.com.med.voll.api.controller;
 
-import br.com.med.voll.api.dto.medico.DadosListagemMedicoDto;
 import br.com.med.voll.api.dto.paciente.DadosCadastroPacienteDto;
 import br.com.med.voll.api.dto.paciente.DadosListagemPacienteDto;
 import br.com.med.voll.api.service.paciente.PacienteService;
