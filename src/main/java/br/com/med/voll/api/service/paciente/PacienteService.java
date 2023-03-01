@@ -1,5 +1,6 @@
 package br.com.med.voll.api.service.paciente;
 
+import br.com.med.voll.api.dto.paciente.DadosAtualizacaoPacienteDto;
 import br.com.med.voll.api.dto.paciente.DadosCadastroPacienteDto;
 import br.com.med.voll.api.dto.paciente.DadosListagemPacienteDto;
 import org.springframework.data.domain.Page;
@@ -11,4 +12,6 @@ public interface PacienteService {
     ResponseEntity executePost(DadosCadastroPacienteDto dados);
 
     ResponseEntity<Page<DadosListagemPacienteDto>> executeGetAll(Pageable paginacao);
+
+    ResponseEntity executePut(DadosAtualizacaoPacienteDto dados);
 }
