@@ -40,6 +40,7 @@ public record DadosCadastroPacienteDto(
         model.setEmail(dados.email);
         model.setTelefone(dados.telefone);
         model.setCpf(dados.cpf);
+        model.setAtivo(true);
         model.setEndereco(modelEndereco);
 
         return model;
