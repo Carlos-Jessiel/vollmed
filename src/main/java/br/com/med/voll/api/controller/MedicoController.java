@@ -1,5 +1,6 @@
 package br.com.med.voll.api.controller;
 
+import br.com.med.voll.api.dto.medico.DadosAtualizacaoMeditoDto;
 import br.com.med.voll.api.dto.medico.DadosCadastroMedicoDto;
 import br.com.med.voll.api.dto.medico.DadosListagemMedicoDto;
 import br.com.med.voll.api.service.medico.MedicoService;
@@ -26,8 +27,12 @@ public class MedicoController {
     }
 
     @GetMapping
-    public Page<DadosListagemMedicoDto> listar(@PageableDefault(size = 10, sort = {"nome"}) Pageable paginacao){
+    public ResponseEntity<Page<DadosListagemMedicoDto>> listar(@PageableDefault(size = 10, sort = {"nome"}) Pageable paginacao){
         return service.execute(paginacao);
     }
 
+    @PutMapping
+    public ResponseEntity atualizar(@RequestBody @Valid DadosAtualizacaoMeditoDto dados){
+        return service.execute(dados);
+    }
 }

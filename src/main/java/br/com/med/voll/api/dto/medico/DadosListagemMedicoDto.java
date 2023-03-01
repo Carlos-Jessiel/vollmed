@@ -12,6 +12,9 @@ public record DadosListagemMedicoDto(
 
 ) {
     public DadosListagemMedicoDto(Medico medico){
-        this(medico.getNome(), medico.getEmail(), medico.getCrm(), medico.getEspecialidade());
+        this(medico.getNome(),
+                medico.getEmail(),
+                medico.getCrm(),
+                medico.getEspecialidade());
     }
 }
