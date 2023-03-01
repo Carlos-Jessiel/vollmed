@@ -45,4 +45,13 @@ public class PacienteServiceImpl implements PacienteService{
 
         return ResponseEntity.ok().body(new DadosDetalhamentoPacienteDto(model));
     }
+
+    @Override
+    @Transactional
+    public ResponseEntity executeDelete(Long id) {
+        var model = repository.getReferenceById(id);
+        model.setAtivo(false);
+        return ResponseEntity.ok().build();
+    }
+    
 }

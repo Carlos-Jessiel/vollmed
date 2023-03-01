@@ -14,4 +14,7 @@ public interface PacienteService {
     ResponseEntity<Page<DadosListagemPacienteDto>> executeGetAll(Pageable paginacao);
 
     ResponseEntity executePut(DadosAtualizacaoPacienteDto dados);
+    
+    ResponseEntity executeDelete(Long id);
+    
 }

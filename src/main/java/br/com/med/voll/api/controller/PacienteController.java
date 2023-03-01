@@ -34,5 +34,10 @@ public class PacienteController {
     @PutMapping
     public ResponseEntity atualizar(@RequestBody DadosAtualizacaoPacienteDto dados){
         return service.executePut(dados);
+    }    
+    
+    @DeleteMapping("/{id}")
+    public ResponseEntity cadastrar(@PathVariable Long id) {
+        return service.executeDelete(id);
     }
 }
