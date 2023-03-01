@@ -61,12 +61,4 @@ public class MedicoServiceImpl implements MedicoService{
         return ResponseEntity.ok().body(new DadosDetalhamentoMedicoDto(model));
     }
 
-    //EXCLUSAO FISICA DOS DADOS
-//    @Override
-//    @Transactional
-//    public ResponseEntity execute(Long id) {
-//        repository.deleteById(id);
-//        return ResponseEntity.ok().build();
-//    }
-
 }
