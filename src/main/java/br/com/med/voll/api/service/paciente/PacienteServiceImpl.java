@@ -1,5 +1,6 @@
 package br.com.med.voll.api.service.paciente;
 
+import br.com.med.voll.api.dto.paciente.DadosAtualizacaoPacienteDto;
 import br.com.med.voll.api.dto.paciente.DadosCadastroPacienteDto;
 import br.com.med.voll.api.dto.paciente.DadosDetalhamentoPacienteDto;
 import br.com.med.voll.api.dto.paciente.DadosListagemPacienteDto;
@@ -33,5 +34,15 @@ public class PacienteServiceImpl implements PacienteService{
     @Override
     public ResponseEntity<Page<DadosListagemPacienteDto>> executeGetAll(Pageable paginacao) {
         return ResponseEntity.ok().body(repository.findAllByAtivoTrue(paginacao).map(DadosListagemPacienteDto::new));
+    }
+
+    @Override
+    @Transactional
+    public ResponseEntity executePut(DadosAtualizacaoPacienteDto dados) {
+        var model = repository.getReferenceById(dados.id());
+
+        model.atualizarInformacoes(dados);
+
+        return ResponseEntity.ok().body(new DadosDetalhamentoPacienteDto(model));
     }
 }
