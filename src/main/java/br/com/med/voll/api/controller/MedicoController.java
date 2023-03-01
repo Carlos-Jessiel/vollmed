@@ -35,4 +35,9 @@ public class MedicoController {
     public ResponseEntity atualizar(@RequestBody @Valid DadosAtualizacaoMeditoDto dados){
         return service.execute(dados);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity deletar(@PathVariable Long id){
+        return service.execute(id);
+    }
 }
