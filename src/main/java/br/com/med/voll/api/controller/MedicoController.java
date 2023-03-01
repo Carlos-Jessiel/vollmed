@@ -36,11 +36,6 @@ public class MedicoController {
         return service.executePut(dados);
     }
 
-//    @DeleteMapping("/{id}")
-//    public ResponseEntity deletar(@PathVariable Long id){
-//        return service.execute(id);
-//    }
-
     @DeleteMapping("/{id}")
     public ResponseEntity desativar(@PathVariable Long id){
         return service.executeDelete(id);

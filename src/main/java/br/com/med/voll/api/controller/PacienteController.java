@@ -37,7 +37,7 @@ public class PacienteController {
     }    
     
     @DeleteMapping("/{id}")
-    public ResponseEntity cadastrar(@PathVariable Long id) {
+    public ResponseEntity desativar(@PathVariable Long id) {
         return service.executeDelete(id);
     }
 }
