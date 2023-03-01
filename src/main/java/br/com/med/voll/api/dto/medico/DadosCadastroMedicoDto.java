@@ -1,7 +1,7 @@
 package br.com.med.voll.api.dto.medico;
 
-import br.com.med.voll.api.endereco.DadosEndereco;
-import br.com.med.voll.api.endereco.Endereco;
+import br.com.med.voll.api.dto.endereco.DadosEndereco;
+import br.com.med.voll.api.model.endereco.Endereco;
 import br.com.med.voll.api.model.medico.Especialidade;
 import br.com.med.voll.api.model.medico.Medico;
 import jakarta.validation.Valid;
