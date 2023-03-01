@@ -29,4 +29,9 @@ public class PacienteController {
     public ResponseEntity<Page<DadosListagemPacienteDto>> listar(@PageableDefault(size = 10, sort = {"nome"}) Pageable paginacao){
         return service.executeGetAll(paginacao);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity cadastrar(@PathVariable Long id) {
+        return service.executeDelete(id);
+    }
 }

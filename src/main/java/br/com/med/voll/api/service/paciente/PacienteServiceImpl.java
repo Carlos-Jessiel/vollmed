@@ -34,4 +34,9 @@ public class PacienteServiceImpl implements PacienteService{
     public ResponseEntity<Page<DadosListagemPacienteDto>> executeGetAll(Pageable paginacao) {
         return ResponseEntity.ok().body(repository.findAllByAtivoTrue(paginacao).map(DadosListagemPacienteDto::new));
     }
+
+    @Override
+    public ResponseEntity executeDelete(Long id) {
+        return null;
+    }
 }
