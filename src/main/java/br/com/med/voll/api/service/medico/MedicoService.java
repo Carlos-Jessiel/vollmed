@@ -15,4 +15,6 @@ public interface MedicoService {
     ResponseEntity<Page<DadosListagemMedicoDto>> execute(Pageable paginacao);
 
     ResponseEntity execute(DadosAtualizacaoMeditoDto dados);
+
+    ResponseEntity execute(Long id);
 }

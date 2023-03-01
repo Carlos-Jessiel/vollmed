@@ -32,6 +32,8 @@ public class Medico {
     @Embedded
     private Endereco endereco;
 
+    private Boolean ativo;
+
     public void atualizarInformacoes(DadosAtualizacaoMeditoDto dados) {
         if (dados.nome() != null && !dados.nome().isEmpty()){
             this.nome = dados.nome();
