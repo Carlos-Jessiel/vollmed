@@ -24,7 +24,7 @@ public class MedicoServiceImpl implements MedicoService{
 
     @Override
     @Transactional
-    public ResponseEntity execute(DadosCadastroMedicoDto dados) {
+    public ResponseEntity executePost(DadosCadastroMedicoDto dados) {
         var model = DadosCadastroMedicoDto.construirModel(dados);
 
         repository.save(model);
@@ -33,13 +33,13 @@ public class MedicoServiceImpl implements MedicoService{
     }
 
     @Override
-    public ResponseEntity<Page<DadosListagemMedicoDto>> execute(Pageable paginacao) {
+    public ResponseEntity<Page<DadosListagemMedicoDto>> executeGetAll(Pageable paginacao) {
         return ResponseEntity.ok().body(repository.findAllByAtivoTrue(paginacao).map(DadosListagemMedicoDto::new));
     }
 
     @Override
     @Transactional
-    public ResponseEntity execute(DadosAtualizacaoMeditoDto dados) {
+    public ResponseEntity executePut(DadosAtualizacaoMeditoDto dados) {
         var model = repository.getReferenceById(dados.id());
 
         model.atualizarInformacoes(dados);
@@ -49,10 +49,16 @@ public class MedicoServiceImpl implements MedicoService{
 
     @Override
     @Transactional
-    public ResponseEntity execute(Long id) {
+    public ResponseEntity executeDelete(Long id) {
         var model = repository.getReferenceById(id);
         model.setAtivo(false);
         return ResponseEntity.ok().build();
+    }
+
+    @Override
+    public ResponseEntity executeGetOne(Long id) {
+        var model = repository.getReferenceById(id);
+        return ResponseEntity.ok().body(new DadosDetalhamentoMedicoDto(model));
     }
 
     //EXCLUSAO FISICA DOS DADOS
@@ -62,6 +68,5 @@ public class MedicoServiceImpl implements MedicoService{
 //        repository.deleteById(id);
 //        return ResponseEntity.ok().build();
 //    }
-
 
 }
