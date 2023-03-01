@@ -16,5 +16,6 @@ public interface PacienteService {
     ResponseEntity executePut(DadosAtualizacaoPacienteDto dados);
     
     ResponseEntity executeDelete(Long id);
-    
+
+    ResponseEntity executeGetOne(Long id);
 }

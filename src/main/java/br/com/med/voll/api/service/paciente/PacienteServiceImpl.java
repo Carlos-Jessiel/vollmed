@@ -53,5 +53,11 @@ public class PacienteServiceImpl implements PacienteService{
         model.setAtivo(false);
         return ResponseEntity.ok().build();
     }
-    
+
+    @Override
+    public ResponseEntity executeGetOne(Long id) {
+        return null;
+    }
+
+
 }
