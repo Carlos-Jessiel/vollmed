@@ -1,5 +1,6 @@
 package br.com.med.voll.api.controller;
 
+import br.com.med.voll.api.dto.paciente.DadosAtualizacaoPacienteDto;
 import br.com.med.voll.api.dto.paciente.DadosCadastroPacienteDto;
 import br.com.med.voll.api.dto.paciente.DadosListagemPacienteDto;
 import br.com.med.voll.api.service.paciente.PacienteService;
@@ -30,6 +31,11 @@ public class PacienteController {
         return service.executeGetAll(paginacao);
     }
 
+    @PutMapping
+    public ResponseEntity atualizar(@RequestBody DadosAtualizacaoPacienteDto dados){
+        return service.executePut(dados);
+    }    
+    
     @DeleteMapping("/{id}")
     public ResponseEntity cadastrar(@PathVariable Long id) {
         return service.executeDelete(id);
