@@ -23,17 +23,17 @@ public class MedicoController {
 
     @PostMapping
     public ResponseEntity cadastrar(@RequestBody @Valid DadosCadastroMedicoDto dados){
-        return service.execute(dados);
+        return service.executePost(dados);
     }
 
     @GetMapping
     public ResponseEntity<Page<DadosListagemMedicoDto>> listar(@PageableDefault(size = 10, sort = {"nome"}) Pageable paginacao){
-        return service.execute(paginacao);
+        return service.executeGetAll(paginacao);
     }
 
     @PutMapping
     public ResponseEntity atualizar(@RequestBody @Valid DadosAtualizacaoMeditoDto dados){
-        return service.execute(dados);
+        return service.executePut(dados);
     }
 
 //    @DeleteMapping("/{id}")
@@ -43,6 +43,11 @@ public class MedicoController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity desativar(@PathVariable Long id){
-        return service.execute(id);
+        return service.executeDelete(id);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity detalhar(@PathVariable Long id){
+        return service.executeGetOne(id);
     }
 }
