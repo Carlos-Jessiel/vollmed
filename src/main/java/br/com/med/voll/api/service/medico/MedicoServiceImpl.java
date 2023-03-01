@@ -50,7 +50,18 @@ public class MedicoServiceImpl implements MedicoService{
     @Override
     @Transactional
     public ResponseEntity execute(Long id) {
-        repository.deleteById(id);
+        var model = repository.getReferenceById(id);
+        model.setAtivo(false);
         return ResponseEntity.ok().build();
     }
+
+    //EXCLUSAO FISICA DOS DADOS
+//    @Override
+//    @Transactional
+//    public ResponseEntity execute(Long id) {
+//        repository.deleteById(id);
+//        return ResponseEntity.ok().build();
+//    }
+
+
 }

@@ -42,6 +42,7 @@ public record DadosCadastroMedicoDto(
         modelEndereco.setLogradouro(dados.endereco.logradouro());
 
         Medico model = new Medico();
+        model.setAtivo(true);
         model.setNome(dados.nome);
         model.setCrm(dados.crm);
         model.setEmail(dados.email);
