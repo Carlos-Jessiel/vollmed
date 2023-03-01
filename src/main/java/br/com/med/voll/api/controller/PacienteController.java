@@ -40,4 +40,9 @@ public class PacienteController {
     public ResponseEntity desativar(@PathVariable Long id) {
         return service.executeDelete(id);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity detalhar(@PathVariable Long id) {
+        return service.executeGetOne(id);
+    }
 }

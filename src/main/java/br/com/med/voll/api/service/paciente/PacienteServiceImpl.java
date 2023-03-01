@@ -53,5 +53,13 @@ public class PacienteServiceImpl implements PacienteService{
         model.setAtivo(false);
         return ResponseEntity.ok().build();
     }
-    
+
+    @Override
+    public ResponseEntity executeGetOne(Long id) {
+        var model = repository.getReferenceById(id);
+
+        return ResponseEntity.ok().body(new DadosDetalhamentoPacienteDto(model));
+    }
+
+
 }
