@@ -2,7 +2,10 @@ package br.com.med.voll.api.service.paciente;
 
 import br.com.med.voll.api.dto.paciente.DadosCadastroPacienteDto;
 import br.com.med.voll.api.dto.paciente.DadosDetalhamentoPacienteDto;
+import br.com.med.voll.api.dto.paciente.DadosListagemPacienteDto;
 import br.com.med.voll.api.repository.PacienteRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -23,5 +26,10 @@ public class PacienteServiceImpl implements PacienteService{
         repository.save(model);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(new DadosDetalhamentoPacienteDto(model));
+    }
+
+    @Override
+    public ResponseEntity<Page<DadosListagemPacienteDto>> executeGetAll(Pageable paginacao) {
+        return null;
     }
 }
