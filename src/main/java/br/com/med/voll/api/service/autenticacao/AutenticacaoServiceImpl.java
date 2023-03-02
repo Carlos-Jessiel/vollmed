@@ -1,6 +1,7 @@
 package br.com.med.voll.api.service.autenticacao;
 
 import br.com.med.voll.api.dto.autenticacao.DadosAutenticacaoDto;
+import br.com.med.voll.api.infra.security.DadosTokenJwtDto;
 import br.com.med.voll.api.infra.security.TokenService;
 import br.com.med.voll.api.model.usuario.Usuario;
 import br.com.med.voll.api.repository.UsuarioRepository;
@@ -37,9 +38,10 @@ public class AutenticacaoServiceImpl implements UserDetailsService, Autenticacao
 
     @Override
     public ResponseEntity execute(DadosAutenticacaoDto dados) {
-        var token = new UsernamePasswordAuthenticationToken(dados.login(), dados.senha());
-        var authentication = manager.authenticate(token);
+        var authenticationToken = new UsernamePasswordAuthenticationToken(dados.login(), dados.senha());
+        var authentication = manager.authenticate(authenticationToken);
+        var tokenJWT = tokenService.gerarToken((Usuario) authentication.getPrincipal());
 
-        return ResponseEntity.ok(tokenService.gerarToken((Usuario) authentication.getPrincipal()));
+        return ResponseEntity.ok(new DadosTokenJwtDto(tokenJWT));
     }
 }
