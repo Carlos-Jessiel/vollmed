@@ -1,7 +1,7 @@
 package br.com.med.voll.api.controller;
 
-import br.com.med.voll.api.dto.autenticacao.DadosAutenticacaoDto;
-import br.com.med.voll.api.service.autenticacao.AutenticacaoService;
+import br.com.med.voll.api.infra.autenticacao.dto.DadosAutenticacaoDto;
+import br.com.med.voll.api.infra.autenticacao.AutenticacaoService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

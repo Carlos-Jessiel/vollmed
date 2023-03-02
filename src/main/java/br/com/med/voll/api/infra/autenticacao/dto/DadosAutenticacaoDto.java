@@ -1,4 +1,4 @@
-package br.com.med.voll.api.dto.autenticacao;
+package br.com.med.voll.api.infra.autenticacao.dto;
 
 public record DadosAutenticacaoDto(
 
