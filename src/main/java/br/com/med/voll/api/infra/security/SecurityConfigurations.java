@@ -1,4 +1,4 @@
-package br.com.med.voll.api.infra;
+package br.com.med.voll.api.infra.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

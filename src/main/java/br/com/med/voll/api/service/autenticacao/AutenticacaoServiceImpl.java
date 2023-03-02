@@ -1,8 +1,9 @@
-package br.com.med.voll.api.service;
+package br.com.med.voll.api.service.autenticacao;
 
 import br.com.med.voll.api.dto.autenticacao.DadosAutenticacaoDto;
+import br.com.med.voll.api.infra.security.TokenService;
+import br.com.med.voll.api.model.usuario.Usuario;
 import br.com.med.voll.api.repository.UsuarioRepository;
-import br.com.med.voll.api.service.autenticacao.AutenticacaoService;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,10 +20,14 @@ public class AutenticacaoServiceImpl implements UserDetailsService, Autenticacao
 
     private final AuthenticationManager manager;
 
+    private final TokenService tokenService;
+
     public AutenticacaoServiceImpl(UsuarioRepository repository,
-                                   @Lazy AuthenticationManager manager){
+                                   @Lazy AuthenticationManager manager,
+                                   TokenService tokenService){
         this.repository = repository;
         this.manager = manager;
+        this.tokenService = tokenService;
     }
 
     @Override
@@ -35,6 +40,6 @@ public class AutenticacaoServiceImpl implements UserDetailsService, Autenticacao
         var token = new UsernamePasswordAuthenticationToken(dados.login(), dados.senha());
         var authentication = manager.authenticate(token);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(tokenService.gerarToken((Usuario) authentication.getPrincipal()));
     }
 }
