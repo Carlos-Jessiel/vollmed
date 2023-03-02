@@ -5,5 +5,6 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 
 public interface ConsultaService {
+
     ResponseEntity executePost(@Valid DadosAgendamentoConsultaDto dados);
 }
