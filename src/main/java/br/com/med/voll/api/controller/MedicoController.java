@@ -4,6 +4,7 @@ import br.com.med.voll.api.dto.medico.DadosAtualizacaoMeditoDto;
 import br.com.med.voll.api.dto.medico.DadosCadastroMedicoDto;
 import br.com.med.voll.api.dto.medico.DadosListagemMedicoDto;
 import br.com.med.voll.api.service.medico.MedicoService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("medicos")
+@SecurityRequirement(name = "bearer-key")
 public class MedicoController {
 
     private final MedicoService service;
