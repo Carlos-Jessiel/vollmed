@@ -1,14 +1,12 @@
 package br.com.med.voll.api.controller;
 
-import br.com.med.voll.api.dto.consulta.DadosAgendamentoConsultaDto;
+import br.com.med.voll.api.dto.consulta.agendamento.DadosAgendamentoConsultaDto;
+import br.com.med.voll.api.dto.consulta.cancelamento.DadosCancelamentoConsultaDto;
 import br.com.med.voll.api.service.consulta.ConsultaService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/consultas")
@@ -26,4 +24,8 @@ public class ConsultaController {
         return service.executePost(dados);
     }
 
+    @DeleteMapping
+    public ResponseEntity cancelar(@RequestBody @Valid DadosCancelamentoConsultaDto dados){
+        return service.executeDelete(dados);
+    }
 }
