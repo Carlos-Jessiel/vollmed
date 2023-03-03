@@ -1,5 +1,6 @@
 package br.com.med.voll.api.dto.consulta;
 
+import br.com.med.voll.api.model.medico.Especialidade;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotNull;
 
@@ -7,7 +8,6 @@ import java.time.LocalDateTime;
 
 public record DadosAgendamentoConsultaDto(
 
-        @NotNull
         Long idMedico,
 
         @NotNull
@@ -15,6 +15,9 @@ public record DadosAgendamentoConsultaDto(
 
         @NotNull
         @Future
-        LocalDateTime data
+        LocalDateTime data,
+
+        Especialidade especialidade
+
 ) {
 }
