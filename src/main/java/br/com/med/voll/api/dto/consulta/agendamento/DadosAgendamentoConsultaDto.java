@@ -1,4 +1,4 @@
-package br.com.med.voll.api.dto.consulta;
+package br.com.med.voll.api.dto.consulta.agendamento;
 
 import br.com.med.voll.api.model.medico.Especialidade;
 import jakarta.validation.constraints.Future;
