@@ -26,14 +26,7 @@ public record DadosCadastroPacienteDto(
         DadosEndereco endereco
 ) {
     public static Paciente construirModel(DadosCadastroPacienteDto dados) {
-        Endereco modelEndereco = new Endereco();
-        modelEndereco.setBairro(dados.endereco.bairro());
-        modelEndereco.setUf(dados.endereco.uf());
-        modelEndereco.setCep(dados.endereco.cep());
-        modelEndereco.setCidade(dados.endereco.cidade());
-        modelEndereco.setNumero(dados.endereco.numero());
-        modelEndereco.setComplemento(dados.endereco.complemento());
-        modelEndereco.setLogradouro(dados.endereco.logradouro());
+        Endereco modelEndereco = DadosEndereco.construirModel(dados.endereco);
 
         var model = new Paciente();
         model.setNome(dados.nome);
