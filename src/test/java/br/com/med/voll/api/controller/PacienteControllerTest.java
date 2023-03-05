@@ -1,10 +1,11 @@
 package br.com.med.voll.api.controller;
 
 import br.com.med.voll.api.dto.endereco.DadosEndereco;
-import br.com.med.voll.api.dto.medico.DadosCadastroMedicoDto;
 import br.com.med.voll.api.dto.medico.DadosDetalhamentoMedicoDto;
+import br.com.med.voll.api.dto.paciente.DadosCadastroPacienteDto;
+import br.com.med.voll.api.dto.paciente.DadosDetalhamentoPacienteDto;
 import br.com.med.voll.api.model.medico.Especialidade;
-import br.com.med.voll.api.service.medico.MedicoServiceImpl;
+import br.com.med.voll.api.service.paciente.PacienteServiceImpl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,66 +20,69 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.io.IOException;
+
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 @AutoConfigureJsonTesters
-class MedicoControllerTest {
+class PacienteControllerTest {
 
     @Autowired
     private MockMvc mvc;
 
     @MockBean
-    private MedicoServiceImpl medicoService;
+    private PacienteServiceImpl pacienteService;
 
     @Autowired
-    private JacksonTester<DadosCadastroMedicoDto> dadosCadastroMedicoJSON;
+    private JacksonTester<DadosCadastroPacienteDto> dadosCadastroPacienteJSON;
 
     @Autowired
-    private JacksonTester<DadosDetalhamentoMedicoDto> dadosDetalhamentoMedicoJSON;
+    private JacksonTester<DadosDetalhamentoPacienteDto> dadosDetalhamentoPacienteJSON;
 
     @Test
     @DisplayName("Deveria devolver codigo HTTP 204 indicando cadastro efetuado com sucesso")
     @WithMockUser
     void cadastrar_Cenario1() throws Exception {
         var endereco = DadosEndereco.construirModel(dadosEndereco());
-        var dadosDetalhamentoMedico = new DadosDetalhamentoMedicoDto(
+        var dadosDetalhamentoPaciente = new DadosDetalhamentoPacienteDto(
                 null,
                 "Nome",
                 "email@voll.med",
                 "51900000000",
-                "000000",
-                Especialidade.CARDIOLOGIA,
-                endereco);
-        var dadosCadastroMedico = new DadosCadastroMedicoDto(
+                "66360058405",
+                endereco
+        );
+        var dadosCadastroPaciente = new DadosCadastroPacienteDto(
                 "Nome",
                 "email@voll.med",
                 "51900000000",
-                "000000",
-                Especialidade.CARDIOLOGIA,
-                dadosEndereco());
+                "66360058405",
+                dadosEndereco()
+        );
 
-        when(medicoService.executePost(dadosCadastroMedico))
+        when(pacienteService.executePost(dadosCadastroPaciente))
                 .thenReturn(ResponseEntity
                         .status(HttpStatus.CREATED)
-                        .body(dadosDetalhamentoMedico));
+                        .body(dadosDetalhamentoPaciente));
 
         var response =
-                mvc.perform(post("/medicos")
+                mvc.perform(post("/pacientes")
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .content(dadosCadastroMedicoJSON.write(
-                                        dadosCadastroMedico
-                                ).getJson()))
+                                .content(dadosCadastroPacienteJSON
+                                        .write(dadosCadastroPaciente)
+                                        .getJson()))
                         .andReturn()
                         .getResponse();
 
         assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED.value());
 
-        var jsonEsperado = dadosDetalhamentoMedicoJSON
-                .write(dadosDetalhamentoMedico)
+        var jsonEsperado = dadosDetalhamentoPacienteJSON
+                .write(dadosDetalhamentoPaciente)
                 .getJson();
 
         assertThat(response.getContentAsString()).isEqualTo(jsonEsperado);
@@ -89,14 +93,14 @@ class MedicoControllerTest {
     @WithMockUser
     void cadastrar_Cenario2() throws Exception {
         var response =
-                mvc.perform(post("/medicos"))
+                mvc.perform(post("/pacientes"))
                         .andReturn()
                         .getResponse();
 
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
     }
 
-    private DadosEndereco dadosEndereco(){
+    private DadosEndereco dadosEndereco() {
         return new DadosEndereco(
                 "rua tal",
                 "bairro",
