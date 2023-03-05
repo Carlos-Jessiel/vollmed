@@ -20,6 +20,16 @@ public class Endereco {
     private String complemento;
     private String numero;
 
+    public Endereco(DadosEndereco dados) {
+        this.logradouro = dados.logradouro();
+        this.bairro = dados.bairro();
+        this.cep = dados.cep();
+        this.uf = dados.uf();
+        this.cidade = dados.cidade();
+        this.numero = dados.numero();
+        this.complemento = dados.complemento();
+    }
+
     public void atualizarInformacoes(DadosEndereco dados) {
         if (dados.logradouro() != null && !dados.logradouro().isEmpty()) {
             this.logradouro = dados.logradouro();

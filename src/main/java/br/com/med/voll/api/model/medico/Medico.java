@@ -1,6 +1,7 @@
 package br.com.med.voll.api.model.medico;
 
 import br.com.med.voll.api.dto.medico.DadosAtualizacaoMeditoDto;
+import br.com.med.voll.api.dto.medico.DadosCadastroMedicoDto;
 import br.com.med.voll.api.model.endereco.Endereco;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -33,6 +34,16 @@ public class Medico {
     private Endereco endereco;
 
     private Boolean ativo;
+
+    public Medico(DadosCadastroMedicoDto dados) {
+        this.ativo = true;
+        this.nome = dados.nome();
+        this.email = dados.email();
+        this.telefone = dados.telefone();
+        this.crm = dados.crm();
+        this.especialidade = dados.especialidade();
+        this.endereco = new Endereco(dados.endereco());
+    }
 
     public void atualizarInformacoes(DadosAtualizacaoMeditoDto dados) {
         if (dados.nome() != null && !dados.nome().isEmpty()){
