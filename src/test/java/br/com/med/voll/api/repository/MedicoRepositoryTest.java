@@ -35,7 +35,6 @@ class MedicoRepositoryTest {
     @Autowired
     private TestEntityManager em;
 
-
     @Test
     @DisplayName("Deveria devolver null quando unico medico cadastrado nao esta disponivel na data")
     void escolherMedicoAleatorioLivreNaDataCenario1() {
@@ -71,7 +70,7 @@ class MedicoRepositoryTest {
     }
 
     private Medico cadastrarMedico(String nome, String email, String crm, Especialidade especialidade){
-        var medico = new Medico(dadosMedico(nome, email, crm, especialidade));
+        var medico = DadosCadastroMedicoDto.construirModel(dadosMedico(nome, email, crm, especialidade));
         em.persist(medico);
         return medico;
     }
@@ -81,7 +80,7 @@ class MedicoRepositoryTest {
     }
 
     private Paciente cadastrarPaciente(String nome, String email, String cpf){
-        var paciente = new Paciente(dadosCadastroPaciente(nome, email, cpf));
+        var paciente = DadosCadastroPacienteDto.construirModel(dadosCadastroPaciente(nome, email, cpf));
         em.persist(paciente);
         return paciente;
     }

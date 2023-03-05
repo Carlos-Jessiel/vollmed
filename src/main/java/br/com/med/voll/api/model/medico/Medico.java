@@ -35,16 +35,6 @@ public class Medico {
 
     private Boolean ativo;
 
-    public Medico(DadosCadastroMedicoDto dados) {
-        this.ativo = true;
-        this.nome = dados.nome();
-        this.email = dados.email();
-        this.telefone = dados.telefone();
-        this.crm = dados.crm();
-        this.especialidade = dados.especialidade();
-        this.endereco = new Endereco(dados.endereco());
-    }
-
     public void atualizarInformacoes(DadosAtualizacaoMeditoDto dados) {
         if (dados.nome() != null && !dados.nome().isEmpty()){
             this.nome = dados.nome();
