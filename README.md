@@ -33,9 +33,9 @@ As seguintes tecnologias foram utilizadas no desenvolvimento da API Rest do proj
 
 ## 📝 Como usar
 
-Para poder ter acesso ao CRUD deve ser criado um usuario no banco de dados contendo login e senha, a senha de ver criada levando em consideração que o projeto foi desenvolvido usando Bcrypt.
+Para poder ter acesso ao CRUD deve ser criado um usuario no banco de dados contendo login e senha, a senha deve ser criada levando em consideração que o projeto foi desenvolvido usando Bcrypt.
 
-Tendo cadastrado usuario terá acesso ao Token do tipo Bearer.
+Tendo cadastrado usuario terá acesso ao Token do tipo Bearer, que será necessário ser informado para poder fazer as requisições.
 
 ---
 
