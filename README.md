@@ -41,7 +41,7 @@ Tendo cadastrado usuario terá acesso ao Token do tipo Bearer, que será necess�
 
 ## 📝 Licença
 
-Estudante: [Carlos Jessiel Nuñez Soares](https://www.linkedin.com/in/carlos-jessiel-nu%C3%B1ez-soares/)
+Estudante: [Carlos Jessiel Nuñez Soares](https://www.linkedin.com/in/carlos-jessiel-nunez-soares/)
 
 Projeto desenvolvido acompanhando curso de [Alura](https://www.alura.com.br) e utilizado nos cursos de Spring Boot.
 
