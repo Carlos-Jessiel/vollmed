@@ -26,6 +26,6 @@ public class SpringDocConfigurations {
                         .contact(new Contact()
                                 .name("Carlos Jessiel Nuñez Soares")
                                 .email("c.jessiel_nunez@hotmail.com")
-                                .url("https://www.linkedin.com/in/carlos-jessiel-nu%C3%B1ez-soares/")));
+                                .url("https://www.linkedin.com/in/carlos-jessiel-nunez-soares/")));
     }
 }
