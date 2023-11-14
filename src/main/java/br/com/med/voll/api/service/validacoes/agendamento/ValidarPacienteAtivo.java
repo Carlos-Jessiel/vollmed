@@ -1,4 +1,4 @@
-package br.com.med.voll.api.service.consulta.validacoes.agendamento;
+package br.com.med.voll.api.service.validacoes.agendamento;
 
 import br.com.med.voll.api.dto.consulta.agendamento.DadosAgendamentoConsultaDto;
 import br.com.med.voll.api.infra.execption.ValidacaoException;

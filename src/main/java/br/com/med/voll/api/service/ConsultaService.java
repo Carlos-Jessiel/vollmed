@@ -1,4 +1,4 @@
-package br.com.med.voll.api.service.consulta;
+package br.com.med.voll.api.service;
 
 import br.com.med.voll.api.dto.consulta.agendamento.DadosAgendamentoConsultaDto;
 import br.com.med.voll.api.dto.consulta.cancelamento.DadosCancelamentoConsultaDto;

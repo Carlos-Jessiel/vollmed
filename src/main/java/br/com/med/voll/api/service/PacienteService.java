@@ -1,4 +1,4 @@
-package br.com.med.voll.api.service.paciente;
+package br.com.med.voll.api.service;
 
 import br.com.med.voll.api.dto.paciente.DadosAtualizacaoPacienteDto;
 import br.com.med.voll.api.dto.paciente.DadosCadastroPacienteDto;

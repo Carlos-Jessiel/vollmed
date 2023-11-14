@@ -3,7 +3,7 @@ package br.com.med.voll.api.controller;
 import br.com.med.voll.api.dto.consulta.agendamento.DadosAgendamentoConsultaDto;
 import br.com.med.voll.api.dto.consulta.agendamento.DadosDetalhamentoConsultaDto;
 import br.com.med.voll.api.model.medico.Especialidade;
-import br.com.med.voll.api.service.consulta.ConsultaServiceImpl;
+import br.com.med.voll.api.service.impl.ConsultaServiceImpl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,11 +1,9 @@
 package br.com.med.voll.api.controller;
 
 import br.com.med.voll.api.dto.endereco.DadosEndereco;
-import br.com.med.voll.api.dto.medico.DadosDetalhamentoMedicoDto;
 import br.com.med.voll.api.dto.paciente.DadosCadastroPacienteDto;
 import br.com.med.voll.api.dto.paciente.DadosDetalhamentoPacienteDto;
-import br.com.med.voll.api.model.medico.Especialidade;
-import br.com.med.voll.api.service.paciente.PacienteServiceImpl;
+import br.com.med.voll.api.service.impl.PacienteServiceImpl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.io.IOException;
-
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 

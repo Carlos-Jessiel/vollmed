@@ -2,7 +2,7 @@ package br.com.med.voll.api.controller;
 
 import br.com.med.voll.api.dto.consulta.agendamento.DadosAgendamentoConsultaDto;
 import br.com.med.voll.api.dto.consulta.cancelamento.DadosCancelamentoConsultaDto;
-import br.com.med.voll.api.service.consulta.ConsultaService;
+import br.com.med.voll.api.service.ConsultaService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;

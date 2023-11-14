@@ -1,4 +1,4 @@
-package br.com.med.voll.api.service.consulta;
+package br.com.med.voll.api.service.impl;
 
 import br.com.med.voll.api.dto.consulta.agendamento.DadosAgendamentoConsultaDto;
 import br.com.med.voll.api.dto.consulta.agendamento.DadosDetalhamentoConsultaDto;
@@ -9,8 +9,9 @@ import br.com.med.voll.api.model.medico.Medico;
 import br.com.med.voll.api.repository.ConsultaRepository;
 import br.com.med.voll.api.repository.MedicoRepository;
 import br.com.med.voll.api.repository.PacienteRepository;
-import br.com.med.voll.api.service.consulta.validacoes.agendamento.ValidadorAgendamentoDeConsulta;
-import br.com.med.voll.api.service.consulta.validacoes.cancelamento.ValidadorCancelamentoDeConsulta;
+import br.com.med.voll.api.service.ConsultaService;
+import br.com.med.voll.api.service.validacoes.agendamento.ValidadorAgendamentoDeConsulta;
+import br.com.med.voll.api.service.validacoes.cancelamento.ValidadorCancelamentoDeConsulta;
 import jakarta.transaction.Transactional;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -18,7 +19,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class ConsultaServiceImpl implements ConsultaService{
+public class ConsultaServiceImpl implements ConsultaService {
 
     private final ConsultaRepository consultaRepository;
 

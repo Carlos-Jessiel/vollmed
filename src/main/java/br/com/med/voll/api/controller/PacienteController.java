@@ -3,7 +3,7 @@ package br.com.med.voll.api.controller;
 import br.com.med.voll.api.dto.paciente.DadosAtualizacaoPacienteDto;
 import br.com.med.voll.api.dto.paciente.DadosCadastroPacienteDto;
 import br.com.med.voll.api.dto.paciente.DadosListagemPacienteDto;
-import br.com.med.voll.api.service.paciente.PacienteService;
+import br.com.med.voll.api.service.PacienteService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
