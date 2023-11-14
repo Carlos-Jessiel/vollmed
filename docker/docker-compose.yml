@@ -1,0 +1,12 @@
+version: '3.5'
+
+services:
+  vollmed-postgres:
+    container_name: postgres-vollmed
+    image: postgres:13.6
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-vollmed-admin}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-@vollmed123}
+      POSTGRES_DB: vollmed
+    ports:
+      - "5440:5432"

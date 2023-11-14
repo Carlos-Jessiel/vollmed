@@ -1,7 +1,5 @@
 package br.com.med.voll.api.model.medico;
 
-import br.com.med.voll.api.dto.medico.DadosAtualizacaoMeditoDto;
-import br.com.med.voll.api.dto.medico.DadosCadastroMedicoDto;
 import br.com.med.voll.api.model.endereco.Endereco;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -28,22 +26,12 @@ public class Medico {
     private String telefone;
 
     private String crm;
+
     @Enumerated(EnumType.STRING)
     private Especialidade especialidade;
+
     @Embedded
     private Endereco endereco;
 
     private Boolean ativo;
-
-    public void atualizarInformacoes(DadosAtualizacaoMeditoDto dados) {
-        if (dados.nome() != null && !dados.nome().isEmpty()){
-            this.nome = dados.nome();
-        }
-        if (dados.telefone() != null && dados.telefone().matches("\\d{11}")){
-            this.telefone = dados.telefone();
-        }
-        if (dados.endereco() != null){
-            this.endereco.atualizarInformacoes(dados.endereco());
-        }
-    }
 }

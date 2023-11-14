@@ -1,15 +1,15 @@
 package br.com.med.voll.api.dto.medico;
 
 import br.com.med.voll.api.dto.endereco.DadosEndereco;
-import br.com.med.voll.api.model.endereco.Endereco;
 import br.com.med.voll.api.model.medico.Especialidade;
-import br.com.med.voll.api.model.medico.Medico;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
+import lombok.Builder;
 
+@Builder
 public record DadosCadastroMedicoDto(
 
         @NotBlank
@@ -29,21 +29,5 @@ public record DadosCadastroMedicoDto(
         @Valid
         DadosEndereco endereco
 
-
 ) {
-    public static Medico construirModel(DadosCadastroMedicoDto dados) {
-        Endereco modelEndereco = DadosEndereco.construirModel(dados.endereco);
-
-        Medico model = new Medico();
-        model.setAtivo(true);
-        model.setNome(dados.nome);
-        model.setCrm(dados.crm);
-        model.setEmail(dados.email);
-        model.setTelefone(dados.telefone);
-        model.setEndereco(modelEndereco);
-        model.setEspecialidade(dados.especialidade);
-
-        return model;
-    }
-
 }

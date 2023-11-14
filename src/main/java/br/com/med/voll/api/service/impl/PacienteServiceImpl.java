@@ -1,10 +1,11 @@
-package br.com.med.voll.api.service.paciente;
+package br.com.med.voll.api.service.impl;
 
 import br.com.med.voll.api.dto.paciente.DadosAtualizacaoPacienteDto;
 import br.com.med.voll.api.dto.paciente.DadosCadastroPacienteDto;
 import br.com.med.voll.api.dto.paciente.DadosDetalhamentoPacienteDto;
 import br.com.med.voll.api.dto.paciente.DadosListagemPacienteDto;
 import br.com.med.voll.api.repository.PacienteRepository;
+import br.com.med.voll.api.service.PacienteService;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,7 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
-public class PacienteServiceImpl implements PacienteService{
+public class PacienteServiceImpl implements PacienteService {
 
     private final PacienteRepository repository;
 

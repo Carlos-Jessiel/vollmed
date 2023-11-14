@@ -3,7 +3,9 @@ package br.com.med.voll.api.dto.endereco;
 import br.com.med.voll.api.model.endereco.Endereco;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
+import lombok.Builder;
 
+@Builder
 public record DadosEndereco(
 
         @NotBlank
