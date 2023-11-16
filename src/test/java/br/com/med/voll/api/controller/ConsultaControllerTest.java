@@ -1,7 +1,7 @@
 package br.com.med.voll.api.controller;
 
-import br.com.med.voll.api.dto.consulta.agendamento.DadosAgendamentoConsultaDto;
-import br.com.med.voll.api.dto.consulta.agendamento.DadosDetalhamentoConsultaDto;
+import br.com.med.voll.api.dto.consulta.agendamento.DadosAgendamentoConsultaDTO;
+import br.com.med.voll.api.dto.consulta.agendamento.DadosDetalhamentoConsultaDTO;
 import br.com.med.voll.api.model.medico.Especialidade;
 import br.com.med.voll.api.service.impl.ConsultaServiceImpl;
 import org.junit.jupiter.api.DisplayName;
@@ -34,10 +34,10 @@ class ConsultaControllerTest {
     private MockMvc mvc;
 
     @Autowired
-    private JacksonTester<DadosAgendamentoConsultaDto> dadosAgendamentoConsultaJSON;
+    private JacksonTester<DadosAgendamentoConsultaDTO> dadosAgendamentoConsultaJSON;
 
     @Autowired
-    private JacksonTester<DadosDetalhamentoConsultaDto> dadosDetalhamentoConsultaJSON;
+    private JacksonTester<DadosDetalhamentoConsultaDTO> dadosDetalhamentoConsultaJSON;
 
     @MockBean
     private ConsultaServiceImpl consultaService;
@@ -60,7 +60,7 @@ class ConsultaControllerTest {
     void agendar_Cenario2() throws Exception {
         var data = LocalDateTime.now().plusHours(1);
         var especialidade = Especialidade.CARDIOLOGIA;
-        var dadosDetalhamento = new DadosDetalhamentoConsultaDto(
+        var dadosDetalhamento = new DadosDetalhamentoConsultaDTO(
                 null,
                 2L,
                 1L,
@@ -74,7 +74,7 @@ class ConsultaControllerTest {
                 mvc.perform(post("/consultas")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(dadosAgendamentoConsultaJSON.write(
-                                        new DadosAgendamentoConsultaDto(2L, 1L, data, especialidade)
+                                        new DadosAgendamentoConsultaDTO(2L, 1L, data, especialidade)
                                 ).getJson())
                         )
                         .andReturn()

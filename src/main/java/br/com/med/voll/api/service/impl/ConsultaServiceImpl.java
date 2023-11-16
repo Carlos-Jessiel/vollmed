@@ -1,7 +1,7 @@
 package br.com.med.voll.api.service.impl;
 
-import br.com.med.voll.api.dto.consulta.agendamento.DadosAgendamentoConsultaDto;
-import br.com.med.voll.api.dto.consulta.agendamento.DadosDetalhamentoConsultaDto;
+import br.com.med.voll.api.dto.consulta.agendamento.DadosAgendamentoConsultaDTO;
+import br.com.med.voll.api.dto.consulta.agendamento.DadosDetalhamentoConsultaDTO;
 import br.com.med.voll.api.dto.consulta.cancelamento.DadosCancelamentoConsultaDto;
 import br.com.med.voll.api.infra.execption.ValidacaoException;
 import br.com.med.voll.api.model.consulta.Consulta;
@@ -45,7 +45,7 @@ public class ConsultaServiceImpl implements ConsultaService {
 
     @Override
     @Transactional
-    public ResponseEntity executePost(DadosAgendamentoConsultaDto dados) {
+    public ResponseEntity executePost(DadosAgendamentoConsultaDTO dados) {
         if (!pacienteRepository.existsById(dados.idPaciente())){
             throw new ValidacaoException("Id do paciente informado não existe!");
         }
@@ -65,7 +65,7 @@ public class ConsultaServiceImpl implements ConsultaService {
 
         consultaRepository.save(consulta);
 
-        return ResponseEntity.ok(new DadosDetalhamentoConsultaDto(consulta));
+        return ResponseEntity.ok(new DadosDetalhamentoConsultaDTO(consulta));
     }
 
     @Override
@@ -85,7 +85,7 @@ public class ConsultaServiceImpl implements ConsultaService {
 
 
 
-    private Medico escolherMedico(DadosAgendamentoConsultaDto dados) {
+    private Medico escolherMedico(DadosAgendamentoConsultaDTO dados) {
         if (dados.idMedico() != null){
             return medicoRepository.getReferenceById(dados.idMedico());
         }

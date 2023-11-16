@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 
-public record DadosAgendamentoConsultaDto(
+public record DadosAgendamentoConsultaDTO(
 
         Long idMedico,
 

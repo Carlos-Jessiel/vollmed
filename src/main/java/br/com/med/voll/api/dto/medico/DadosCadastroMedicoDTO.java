@@ -1,16 +1,14 @@
 package br.com.med.voll.api.dto.medico;
 
-import br.com.med.voll.api.dto.endereco.DadosEndereco;
+import br.com.med.voll.api.dto.endereco.DadosEnderecoDTO;
 import br.com.med.voll.api.model.medico.Especialidade;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
-import lombok.Builder;
 
-@Builder
-public record DadosCadastroMedicoDto(
+public record DadosCadastroMedicoDTO(
 
         @NotBlank
         String nome,
@@ -27,7 +25,6 @@ public record DadosCadastroMedicoDto(
         Especialidade especialidade,
         @NotNull
         @Valid
-        DadosEndereco endereco
-
+        DadosEnderecoDTO endereco
 ) {
 }

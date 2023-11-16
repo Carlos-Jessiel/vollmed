@@ -1,21 +1,22 @@
 package br.com.med.voll.api.service;
 
-import br.com.med.voll.api.dto.paciente.DadosAtualizacaoPacienteDto;
-import br.com.med.voll.api.dto.paciente.DadosCadastroPacienteDto;
-import br.com.med.voll.api.dto.paciente.DadosListagemPacienteDto;
+import br.com.med.voll.api.dto.paciente.DadosAtualizacaoPacienteDTO;
+import br.com.med.voll.api.dto.paciente.DadosCadastroPacienteDTO;
+import br.com.med.voll.api.dto.paciente.DadosDetalhamentoPacienteDTO;
+import br.com.med.voll.api.dto.paciente.DadosListagemPacienteDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 
 public interface PacienteService {
 
-    ResponseEntity executePost(DadosCadastroPacienteDto dados);
+    ResponseEntity<DadosDetalhamentoPacienteDTO> executePost(DadosCadastroPacienteDTO dados);
 
-    ResponseEntity<Page<DadosListagemPacienteDto>> executeGetAll(Pageable paginacao);
+    ResponseEntity<Page<DadosListagemPacienteDTO>> executeGetAll(Pageable paginacao);
 
-    ResponseEntity executePut(DadosAtualizacaoPacienteDto dados);
+    ResponseEntity<DadosDetalhamentoPacienteDTO> executePut(DadosAtualizacaoPacienteDTO dados);
     
     ResponseEntity executeDelete(Long id);
 
-    ResponseEntity executeGetOne(Long id);
+    ResponseEntity<DadosDetalhamentoPacienteDTO> executeGetOne(Long id);
 }

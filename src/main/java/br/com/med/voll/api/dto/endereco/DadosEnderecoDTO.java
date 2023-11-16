@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Pattern;
 import lombok.Builder;
 
 @Builder
-public record DadosEndereco(
+public record DadosEnderecoDTO(
 
         @NotBlank
         String logradouro,
@@ -24,7 +24,7 @@ public record DadosEndereco(
         String numero
 
 ) {
-    public static Endereco construirModel(DadosEndereco dados) {
+    public static Endereco construirModel(DadosEnderecoDTO dados) {
             var modelEndereco = new Endereco();
             modelEndereco.setBairro(dados.bairro);
             modelEndereco.setUf(dados.uf);

@@ -1,12 +1,16 @@
 package br.com.med.voll.api.service.impl;
 
-import br.com.med.voll.api.dto.paciente.DadosAtualizacaoPacienteDto;
-import br.com.med.voll.api.dto.paciente.DadosCadastroPacienteDto;
-import br.com.med.voll.api.dto.paciente.DadosDetalhamentoPacienteDto;
-import br.com.med.voll.api.dto.paciente.DadosListagemPacienteDto;
+import br.com.med.voll.api.dto.paciente.DadosAtualizacaoPacienteDTO;
+import br.com.med.voll.api.dto.paciente.DadosCadastroPacienteDTO;
+import br.com.med.voll.api.dto.paciente.DadosDetalhamentoPacienteDTO;
+import br.com.med.voll.api.dto.paciente.DadosListagemPacienteDTO;
+import br.com.med.voll.api.infra.execption.ValidacaoException;
+import br.com.med.voll.api.mapper.PacienteMapper;
+import br.com.med.voll.api.model.paciente.Paciente;
 import br.com.med.voll.api.repository.PacienteRepository;
 import br.com.med.voll.api.service.PacienteService;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -14,53 +18,59 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class PacienteServiceImpl implements PacienteService {
 
     private final PacienteRepository repository;
+    private final PacienteMapper mapper;
+    private static final String NOT_FOUND_BY_ID = "Não foi localizado nenhum registro para o id informado.";
 
-    public PacienteServiceImpl(PacienteRepository repository){
-        this.repository = repository;
+    @Override
+    @Transactional
+    public ResponseEntity<DadosDetalhamentoPacienteDTO> executePost(DadosCadastroPacienteDTO dto) {
+        try {
+            return ResponseEntity
+                    .status(HttpStatus.CREATED)
+                    .body(mapper.toDTO(repository.save(mapper.toEntity(dto))));
+        } catch (Exception e) {
+            throw new ValidacaoException(e.getMessage());
+        }
+    }
+
+    @Override
+    public ResponseEntity<Page<DadosListagemPacienteDTO>> executeGetAll(Pageable paginacao) {
+        return ResponseEntity
+                .ok()
+                .body(repository.findAllByAtivoTrue(paginacao).map(mapper::toListDTO));
     }
 
     @Override
     @Transactional
-    public ResponseEntity executePost(DadosCadastroPacienteDto dados) {
-        var model = DadosCadastroPacienteDto.construirModel(dados);
+    public ResponseEntity<DadosDetalhamentoPacienteDTO> executePut(DadosAtualizacaoPacienteDTO dto) {
+        Paciente entity = repository.findById(dto.id())
+                .orElseThrow(
+                        () -> new ValidacaoException(NOT_FOUND_BY_ID));
 
-        repository.save(model);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(new DadosDetalhamentoPacienteDto(model));
-    }
-
-    @Override
-    public ResponseEntity<Page<DadosListagemPacienteDto>> executeGetAll(Pageable paginacao) {
-        return ResponseEntity.ok().body(repository.findAllByAtivoTrue(paginacao).map(DadosListagemPacienteDto::new));
-    }
-
-    @Override
-    @Transactional
-    public ResponseEntity executePut(DadosAtualizacaoPacienteDto dados) {
-        var model = repository.getReferenceById(dados.id());
-
-        model.atualizarInformacoes(dados);
-
-        return ResponseEntity.ok().body(new DadosDetalhamentoPacienteDto(model));
+        return ResponseEntity
+                .ok()
+                .body(mapper.toDTO(mapper.atualizar(dto, entity)));
     }
 
     @Override
     @Transactional
     public ResponseEntity executeDelete(Long id) {
-        var model = repository.getReferenceById(id);
-        model.setAtivo(false);
+        repository.findById(id)
+                .orElseThrow(() -> new ValidacaoException(NOT_FOUND_BY_ID))
+                .setAtivo(false);
+
         return ResponseEntity.ok().build();
     }
 
     @Override
-    public ResponseEntity executeGetOne(Long id) {
-        var model = repository.getReferenceById(id);
-
-        return ResponseEntity.ok().body(new DadosDetalhamentoPacienteDto(model));
+    public ResponseEntity<DadosDetalhamentoPacienteDTO> executeGetOne(Long id) {
+        return ResponseEntity
+                .ok()
+                .body(mapper.toDTO(
+                        repository.findById(id).orElseThrow(() -> new ValidacaoException(NOT_FOUND_BY_ID))));
     }
-
-
 }

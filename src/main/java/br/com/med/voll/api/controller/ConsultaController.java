@@ -1,6 +1,6 @@
 package br.com.med.voll.api.controller;
 
-import br.com.med.voll.api.dto.consulta.agendamento.DadosAgendamentoConsultaDto;
+import br.com.med.voll.api.dto.consulta.agendamento.DadosAgendamentoConsultaDTO;
 import br.com.med.voll.api.dto.consulta.cancelamento.DadosCancelamentoConsultaDto;
 import br.com.med.voll.api.service.ConsultaService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -20,7 +20,7 @@ public class ConsultaController {
     }
 
     @PostMapping
-    public ResponseEntity agendar(@RequestBody @Valid DadosAgendamentoConsultaDto dados){
+    public ResponseEntity agendar(@RequestBody @Valid DadosAgendamentoConsultaDTO dados){
         return service.executePost(dados);
     }
 

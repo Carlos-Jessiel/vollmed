@@ -2,7 +2,7 @@ package br.com.med.voll.api.dto.medico;
 
 import br.com.med.voll.api.model.medico.Especialidade;
 
-public record DadosListagemMedicoDto(
+public record DadosListagemMedicoDTO(
 
         Long id,
         String nome,
