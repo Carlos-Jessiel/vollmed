@@ -1,9 +1,9 @@
 package br.com.med.voll.api.provider;
 
-import br.com.med.voll.api.dto.medico.DadosAtualizacaoMeditoDto;
-import br.com.med.voll.api.dto.medico.DadosCadastroMedicoDto;
-import br.com.med.voll.api.dto.medico.DadosDetalhamentoMedicoDto;
-import br.com.med.voll.api.dto.medico.DadosListagemMedicoDto;
+import br.com.med.voll.api.dto.medico.DadosAtualizacaoMedicoDTO;
+import br.com.med.voll.api.dto.medico.DadosCadastroMedicoDTO;
+import br.com.med.voll.api.dto.medico.DadosDetalhamentoMedicoDTO;
+import br.com.med.voll.api.dto.medico.DadosListagemMedicoDTO;
 import br.com.med.voll.api.model.medico.Especialidade;
 import br.com.med.voll.api.model.medico.Medico;
 
@@ -22,31 +22,31 @@ public class MedicoProvider {
         );
     }
 
-    public static DadosCadastroMedicoDto getDTO() {
-        return DadosCadastroMedicoDto.builder()
-                .nome(getEntity().getNome())
-                .email(getEntity().getEmail())
-                .telefone(getEntity().getTelefone())
-                .crm(getEntity().getCrm())
-                .especialidade(getEntity().getEspecialidade())
-                .endereco(EnderecoProvider.getDTO())
-                .build();
+    public static DadosCadastroMedicoDTO getDTO() {
+        return new DadosCadastroMedicoDTO(
+                getEntity().getNome(),
+                getEntity().getEmail(),
+                getEntity().getTelefone(),
+                getEntity().getCrm(),
+                getEntity().getEspecialidade(),
+                EnderecoProvider.getDTO()
+        );
     }
 
-    public static DadosDetalhamentoMedicoDto getDetalhamentoDTO() {
-        return new DadosDetalhamentoMedicoDto(
+    public static DadosDetalhamentoMedicoDTO getDetalhamentoDTO() {
+        return new DadosDetalhamentoMedicoDTO(
                 getEntity().getId(),
                 getEntity().getNome(),
                 getEntity().getEmail(),
                 getEntity().getTelefone(),
                 getEntity().getCrm(),
                 getEntity().getEspecialidade(),
-                getEntity().getEndereco()
+                EnderecoProvider.getDTO()
         );
     }
 
-    public static DadosListagemMedicoDto getListagemDTO() {
-        return new DadosListagemMedicoDto(
+    public static DadosListagemMedicoDTO getListagemDTO() {
+        return new DadosListagemMedicoDTO(
                 getEntity().getId(),
                 getEntity().getNome(),
                 getEntity().getEmail(),
@@ -55,8 +55,8 @@ public class MedicoProvider {
         );
     }
 
-    public static DadosAtualizacaoMeditoDto getAtualizarDTO() {
-        return new DadosAtualizacaoMeditoDto(
+    public static DadosAtualizacaoMedicoDTO getAtualizarDTO() {
+        return new DadosAtualizacaoMedicoDTO(
                 1L,
                 "NOME",
                 "00000000000",
@@ -64,15 +64,15 @@ public class MedicoProvider {
         );
     }
 
-    public static DadosDetalhamentoMedicoDto getMedicoAtualizadoDTO() {
-        return new DadosDetalhamentoMedicoDto(
+    public static DadosDetalhamentoMedicoDTO getMedicoAtualizadoDTO() {
+        return new DadosDetalhamentoMedicoDTO(
                 1L,
                 getAtualizarDTO().nome(),
                 getEntity().getEmail(),
                 getAtualizarDTO().telefone(),
                 getEntity().getCrm(),
                 getEntity().getEspecialidade(),
-                EnderecoProvider.getEntity()
+                EnderecoProvider.getDTO()
         );
     }
 }

@@ -4,7 +4,7 @@ import br.com.med.voll.api.model.consulta.Consulta;
 
 import java.time.LocalDateTime;
 
-public record DadosDetalhamentoConsultaDto(
+public record DadosDetalhamentoConsultaDTO(
 
         Long id,
         Long idMedico,
@@ -12,7 +12,7 @@ public record DadosDetalhamentoConsultaDto(
         LocalDateTime data
 
 ) {
-    public DadosDetalhamentoConsultaDto(Consulta consulta) {
+    public DadosDetalhamentoConsultaDTO(Consulta consulta) {
         this(consulta.getId(), consulta.getMedico().getId(), consulta.getPaciente().getId(), consulta.getData());
     }
 }

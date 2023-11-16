@@ -1,8 +1,8 @@
 package br.com.med.voll.api.controller;
 
-import br.com.med.voll.api.dto.medico.DadosAtualizacaoMeditoDto;
-import br.com.med.voll.api.dto.medico.DadosCadastroMedicoDto;
-import br.com.med.voll.api.dto.medico.DadosDetalhamentoMedicoDto;
+import br.com.med.voll.api.dto.medico.DadosAtualizacaoMedicoDTO;
+import br.com.med.voll.api.dto.medico.DadosCadastroMedicoDTO;
+import br.com.med.voll.api.dto.medico.DadosDetalhamentoMedicoDTO;
 import br.com.med.voll.api.provider.MedicoProvider;
 import br.com.med.voll.api.service.impl.MedicoServiceImpl;
 import org.junit.jupiter.api.DisplayName;
@@ -28,6 +28,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @AutoConfigureJsonTesters
 class MedicoControllerTest {
 
+    private static final String ROTA = "/medicos";
+
     @Autowired
     private MockMvc mvc;
 
@@ -35,13 +37,13 @@ class MedicoControllerTest {
     private MedicoServiceImpl medicoService;
 
     @Autowired
-    private JacksonTester<DadosCadastroMedicoDto> dadosCadastroMedicoJSON;
+    private JacksonTester<DadosCadastroMedicoDTO> dadosCadastroMedicoJSON;
 
     @Autowired
-    private JacksonTester<DadosAtualizacaoMeditoDto> dadosAtualizacaoMeditoJSON;
+    private JacksonTester<DadosAtualizacaoMedicoDTO> dadosAtualizacaoMeditoJSON;
 
     @Autowired
-    private JacksonTester<DadosDetalhamentoMedicoDto> dadosDetalhamentoMedicoJSON;
+    private JacksonTester<DadosDetalhamentoMedicoDTO> dadosDetalhamentoMedicoJSON;
 
     @Test
     @DisplayName("Deveria devolver codigo HTTP 201 indicando cadastro efetuado com sucesso")
@@ -56,7 +58,7 @@ class MedicoControllerTest {
                         .body(dadosDetalhamentoMedico));
 
         var response =
-                mvc.perform(post("/medicos")
+                mvc.perform(post(ROTA)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(dadosCadastroMedicoJSON.write(
                                         dtoMedico
@@ -78,7 +80,7 @@ class MedicoControllerTest {
     @WithMockUser
     void cadastrar_Cenario2() throws Exception {
         var response =
-                mvc.perform(post("/medicos"))
+                mvc.perform(post(ROTA))
                         .andReturn()
                         .getResponse();
 
@@ -97,7 +99,7 @@ class MedicoControllerTest {
                         .status(HttpStatus.OK)
                         .body(dadosDetalhamento));
 
-        var response = mvc.perform(put("/medicos")
+        var response = mvc.perform(put(ROTA)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(dadosAtualizacaoMeditoJSON.write(
                                 dtoAtualizcao
@@ -126,7 +128,7 @@ class MedicoControllerTest {
                         .build());
 
         var response =
-                mvc.perform(delete("/medicos/" + id))
+                mvc.perform(delete(ROTA + "/" + id))
                         .andReturn()
                         .getResponse();
 
@@ -146,7 +148,7 @@ class MedicoControllerTest {
                         .body(responseEsperado));
 
         var response =
-                mvc.perform(get("/medicos/" + id))
+                mvc.perform(get(ROTA + "/" + id))
                         .andReturn()
                         .getResponse();
 

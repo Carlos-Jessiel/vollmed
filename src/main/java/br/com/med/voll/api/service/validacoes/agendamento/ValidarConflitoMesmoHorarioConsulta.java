@@ -1,6 +1,6 @@
 package br.com.med.voll.api.service.validacoes.agendamento;
 
-import br.com.med.voll.api.dto.consulta.agendamento.DadosAgendamentoConsultaDto;
+import br.com.med.voll.api.dto.consulta.agendamento.DadosAgendamentoConsultaDTO;
 import br.com.med.voll.api.infra.execption.ValidacaoException;
 import br.com.med.voll.api.repository.ConsultaRepository;
 import org.springframework.stereotype.Component;
@@ -14,7 +14,7 @@ public class ValidarConflitoMesmoHorarioConsulta implements ValidadorAgendamento
         this.repository = repository;
     }
 
-    public void validar(DadosAgendamentoConsultaDto dados){
+    public void validar(DadosAgendamentoConsultaDTO dados){
         var possuirConsultaNoMesmoHorario = repository.existsByMedicoIdAndDataAndMotivoCancelamentoIsNull(dados.idMedico(), dados.data());
         if (possuirConsultaNoMesmoHorario){
             throw new ValidacaoException("Médico já possui outra consulta agendada nesse mesmo horário!");
