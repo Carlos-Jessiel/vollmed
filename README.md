@@ -28,6 +28,8 @@ As seguintes tecnologias foram utilizadas no desenvolvimento da API Rest do proj
 - **[Hibernate](https://hibernate.org)**
 - **[Flyway](https://flywaydb.org)**
 - **[Lombok](https://projectlombok.org)**
+- **[Docker](https://www.docker.com/)**
+- **[Mapstruct](https://mapstruct.org/)**
 
 ---
 
@@ -35,7 +37,7 @@ As seguintes tecnologias foram utilizadas no desenvolvimento da API Rest do proj
 
 Para poder ter acesso ao CRUD deve ser criado um usuario no banco de dados contendo login e senha, a senha deve ser criada levando em consideração que o projeto foi desenvolvido usando Bcrypt.
 
-Tendo cadastrado usuario terá acesso ao Token do tipo Bearer, que será necessário ser informado para poder fazer as requisições.
+Tendo cadastrado usuario terá acesso ao Token do tipo Bearer, que será necessário para poder fazer as requisições.
 
 ---
 

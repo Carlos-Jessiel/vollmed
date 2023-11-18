@@ -2,7 +2,7 @@ package br.com.med.voll.api.model.consulta;
 
 import br.com.med.voll.api.model.medico.Medico;
 import br.com.med.voll.api.model.paciente.Paciente;
-import br.com.med.voll.api.service.consulta.validacoes.cancelamento.MotivoCancelamento;
+import br.com.med.voll.api.service.validacoes.cancelamento.MotivoCancelamento;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -34,8 +34,4 @@ public class Consulta {
     @Column(name = "motivo_cancelamento")
     @Enumerated(EnumType.STRING)
     private MotivoCancelamento motivoCancelamento;
-
-    public void cancelar(MotivoCancelamento motivo) {
-        this.motivoCancelamento = motivo;
-    }
-}
+ }

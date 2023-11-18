@@ -1,6 +1,5 @@
 package br.com.med.voll.api.infra.security;
 
-import br.com.med.voll.api.model.usuario.Usuario;
 import br.com.med.voll.api.repository.UsuarioRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

@@ -1,9 +1,10 @@
 package br.com.med.voll.api.controller;
 
-import br.com.med.voll.api.dto.consulta.agendamento.DadosAgendamentoConsultaDto;
-import br.com.med.voll.api.dto.consulta.agendamento.DadosDetalhamentoConsultaDto;
-import br.com.med.voll.api.model.medico.Especialidade;
-import br.com.med.voll.api.service.consulta.ConsultaServiceImpl;
+import br.com.med.voll.api.dto.consulta.DadosAgendamentoConsultaDTO;
+import br.com.med.voll.api.dto.consulta.DadosCancelamentoConsultaDto;
+import br.com.med.voll.api.dto.consulta.DadosDetalhamentoConsultaDTO;
+import br.com.med.voll.api.provider.ConsultaProvider;
+import br.com.med.voll.api.service.impl.ConsultaServiceImpl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,26 +19,28 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.time.LocalDateTime;
-
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 @AutoConfigureJsonTesters
 class ConsultaControllerTest {
 
+    private static final String ROTA = "/consultas";
+
     @Autowired
     private MockMvc mvc;
 
     @Autowired
-    private JacksonTester<DadosAgendamentoConsultaDto> dadosAgendamentoConsultaJSON;
+    private JacksonTester<DadosAgendamentoConsultaDTO> dadosAgendamentoConsultaJSON;
 
     @Autowired
-    private JacksonTester<DadosDetalhamentoConsultaDto> dadosDetalhamentoConsultaJSON;
+    private JacksonTester<DadosDetalhamentoConsultaDTO> dadosDetalhamentoConsultaJSON;
+
+    @Autowired
+    private JacksonTester<DadosCancelamentoConsultaDto> dadosCancelamentoConsultaJSON;
 
     @MockBean
     private ConsultaServiceImpl consultaService;
@@ -47,7 +50,7 @@ class ConsultaControllerTest {
     @WithMockUser
     void agendar_Cenario1() throws Exception {
         var response =
-                mvc.perform(post("/consultas"))
+                mvc.perform(post(ROTA))
                         .andReturn()
                         .getResponse();
 
@@ -55,26 +58,21 @@ class ConsultaControllerTest {
     }
 
     @Test
-    @DisplayName("Deveria devolver codigo HTTP 200 quando informações estão válidas")
+    @DisplayName("Deveria devolver codigo HTTP 201 quando informações estão válidas")
     @WithMockUser
     void agendar_Cenario2() throws Exception {
-        var data = LocalDateTime.now().plusHours(1);
-        var especialidade = Especialidade.CARDIOLOGIA;
-        var dadosDetalhamento = new DadosDetalhamentoConsultaDto(
-                null,
-                2L,
-                1L,
-                data);
+        var dadosDetalhamentoConsulta = ConsultaProvider.getDetalhamentoDTO();
+        var consultaDTO = ConsultaProvider.getDTO();
 
-        when(consultaService.executePost(any()))
+        when(consultaService.executePost(consultaDTO))
                 .thenReturn(ResponseEntity.ok()
-                        .body(dadosDetalhamento));
+                        .body(dadosDetalhamentoConsulta));
 
         var response =
-                mvc.perform(post("/consultas")
+                mvc.perform(post(ROTA)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(dadosAgendamentoConsultaJSON.write(
-                                        new DadosAgendamentoConsultaDto(2L, 1L, data, especialidade)
+                                        consultaDTO
                                 ).getJson())
                         )
                         .andReturn()
@@ -83,7 +81,61 @@ class ConsultaControllerTest {
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
 
         var jsonEsperado = dadosDetalhamentoConsultaJSON
-                .write(dadosDetalhamento)
+                .write(dadosDetalhamentoConsulta)
+                .getJson();
+
+        assertThat(response.getContentAsString()).isEqualTo(jsonEsperado);
+    }
+
+    @Test
+    @DisplayName("Deveria devolver codigo HTTP 200")
+    @WithMockUser
+    void deletar_Cenario1() throws Exception {
+        var cancelamentoDTO = ConsultaProvider.getCancelamentoDTO();
+
+        when(consultaService.executeDelete(cancelamentoDTO))
+                .thenReturn(ResponseEntity
+                        .ok()
+                        .build());
+
+        var response =
+                mvc.perform(delete(ROTA)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(dadosCancelamentoConsultaJSON.write(
+                                        cancelamentoDTO
+                                ).getJson())
+                        )
+                        .andReturn()
+                        .getResponse();
+
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+    }
+
+    @Test
+    @DisplayName("Deveria atualizar um registro de consultas")
+    @WithMockUser
+    void atualizar_Cenario1() throws Exception {
+        var dtoAtualizcao = ConsultaProvider.getDTO();
+        var dtoDetalhamento = ConsultaProvider.getConsultaAtualizadaDTO();
+
+        when(consultaService.executePut(100L, dtoAtualizcao))
+                .thenReturn(ResponseEntity
+                        .status(HttpStatus.OK)
+                        .body(dtoDetalhamento));
+
+        var response = mvc.perform(put(ROTA + "/" + 100L)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(dadosAgendamentoConsultaJSON.write(
+                                dtoAtualizcao
+                        ).getJson()))
+                .andReturn()
+                .getResponse();
+
+
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+
+        var jsonEsperado = dadosDetalhamentoConsultaJSON
+                .write(dtoDetalhamento)
                 .getJson();
 
         assertThat(response.getContentAsString()).isEqualTo(jsonEsperado);
