@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Repository
 public interface MedicoRepository extends JpaRepository<Medico, Long> {
@@ -39,5 +40,7 @@ public interface MedicoRepository extends JpaRepository<Medico, Long> {
             where
             m.id = :id
             """)
-    boolean findAtivoById(Long id);
+    boolean findMedicoAtivoById(Long id);
+
+    Optional<Medico> findAtivoById(Long idMedico);
 }

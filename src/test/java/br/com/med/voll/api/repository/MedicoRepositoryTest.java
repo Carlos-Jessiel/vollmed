@@ -67,6 +67,7 @@ class MedicoRepositoryTest {
     }
 
     private Medico cadastrarMedico(Medico entity) {
+        entity.setId(null);
         return em.persist(entity);
     }
 
@@ -75,6 +76,7 @@ class MedicoRepositoryTest {
     }
 
     private Paciente cadastrarPaciente(Paciente entity) {
+        entity.setId(null);
         return em.persist(entity);
     }
 }
