@@ -9,11 +9,11 @@ public class PacienteProvider {
 
     public static Paciente getEntity() {
         return new Paciente(
-                null,
+                1L,
                 "nome",
                 "email@email.com",
                 "12345678910",
-                "71961678055",
+                "65208318083",
                 Boolean.TRUE,
                 EnderecoProvider.getEntity()
         );

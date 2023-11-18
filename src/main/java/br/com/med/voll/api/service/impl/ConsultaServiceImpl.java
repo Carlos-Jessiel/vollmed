@@ -1,10 +1,11 @@
 package br.com.med.voll.api.service.impl;
 
-import br.com.med.voll.api.dto.consulta.agendamento.DadosAgendamentoConsultaDTO;
-import br.com.med.voll.api.dto.consulta.agendamento.DadosDetalhamentoConsultaDTO;
-import br.com.med.voll.api.dto.consulta.cancelamento.DadosCancelamentoConsultaDto;
+import br.com.med.voll.api.dto.consulta.DadosAgendamentoConsultaDTO;
+import br.com.med.voll.api.dto.consulta.DadosDetalhamentoConsultaDTO;
+import br.com.med.voll.api.dto.consulta.DadosCancelamentoConsultaDto;
 import br.com.med.voll.api.infra.execption.ValidacaoException;
-import br.com.med.voll.api.model.consulta.Consulta;
+import br.com.med.voll.api.mapper.ConsultaMapper;
+import br.com.med.voll.api.model.medico.Especialidade;
 import br.com.med.voll.api.model.medico.Medico;
 import br.com.med.voll.api.repository.ConsultaRepository;
 import br.com.med.voll.api.repository.MedicoRepository;
@@ -13,88 +14,109 @@ import br.com.med.voll.api.service.ConsultaService;
 import br.com.med.voll.api.service.validacoes.agendamento.ValidadorAgendamentoDeConsulta;
 import br.com.med.voll.api.service.validacoes.cancelamento.ValidadorCancelamentoDeConsulta;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
+import static java.util.Optional.of;
+import static java.util.Optional.ofNullable;
+
 @Service
+@RequiredArgsConstructor
 public class ConsultaServiceImpl implements ConsultaService {
 
     private final ConsultaRepository consultaRepository;
-
     private final MedicoRepository medicoRepository;
-
     private final PacienteRepository pacienteRepository;
-
     private final List<ValidadorAgendamentoDeConsulta> validadores;
-
     private final List<ValidadorCancelamentoDeConsulta> validadorCancelamento;
+    private final ConsultaMapper mapper;
+    private static final String NOT_FOUND_BY_ID = "Não foi localizado nenhum registro para o id informado.";
+    private static final String MUST_BE_FILLED = "Especialidade é obrigatória quando médico não for escolhido!";
 
-    public ConsultaServiceImpl(ConsultaRepository consultaRepository,
-                               MedicoRepository medicoRepository,
-                               PacienteRepository pacienteRepository,
-                               List<ValidadorAgendamentoDeConsulta> validadores,
-                               List<ValidadorCancelamentoDeConsulta> validadorCancelamento){
-        this.consultaRepository = consultaRepository;
-        this.medicoRepository = medicoRepository;
-        this.pacienteRepository = pacienteRepository;
-        this.validadores = validadores;
-        this.validadorCancelamento = validadorCancelamento;
+    @Override
+    @Transactional
+    public ResponseEntity<DadosDetalhamentoConsultaDTO> executePost(DadosAgendamentoConsultaDTO dto) {
+        validadores.forEach(v -> v.validar(dto));
+
+        var medico = medicoRepository.findAtivoById(dto.idMedico())
+                .orElse(escolherMedico(ofNullable(
+                        dto.especialidade()).orElseThrow(() -> new ValidacaoException(MUST_BE_FILLED)), dto.data()));
+
+        var paciente = pacienteRepository.findById(dto.idPaciente())
+                .orElseThrow(() -> new ValidacaoException(NOT_FOUND_BY_ID));
+
+        return ResponseEntity
+                .ok()
+                .body(mapper.toDTO(consultaRepository.save(mapper.toEntity(dto, medico, paciente))));
     }
 
     @Override
     @Transactional
-    public ResponseEntity executePost(DadosAgendamentoConsultaDTO dados) {
-        if (!pacienteRepository.existsById(dados.idPaciente())){
-            throw new ValidacaoException("Id do paciente informado não existe!");
-        }
-        if (dados.idMedico() != null && !medicoRepository.existsById(dados.idMedico())){
-            throw new ValidacaoException("Id do médico informado não existe!");
-        }
+    public ResponseEntity executeDelete(DadosCancelamentoConsultaDto dto) {
+        validadorCancelamento.forEach(v -> v.validar(dto));
 
-        validadores.forEach(v -> v.validar(dados));
+        consultaRepository
+                .findById(dto.idConsulta())
+                .get()
+                .setMotivoCancelamento(dto.motivoCancelamento());
 
-        var medicoModel = escolherMedico(dados);
-        if (medicoModel == null){
-            throw new ValidacaoException("Não existe médico disponível para a data informada!");
-        }
-        var pacienteModel = pacienteRepository.getReferenceById(dados.idPaciente());
-
-        var consulta = new Consulta(null, medicoModel, pacienteModel, dados.data(), null);
-
-        consultaRepository.save(consulta);
-
-        return ResponseEntity.ok(new DadosDetalhamentoConsultaDTO(consulta));
+        return ResponseEntity.ok().build();
     }
 
     @Override
     @Transactional
-    public ResponseEntity executeDelete(DadosCancelamentoConsultaDto dados) {
-        if (!consultaRepository.existsById(dados.idConsulta())){
-            throw new ValidacaoException("Id da consulta não existe!");
-        }
+    public ResponseEntity<DadosDetalhamentoConsultaDTO> executePut(Long id, DadosAgendamentoConsultaDTO dto) {
+        validadores.forEach(v -> v.validar(dto));
 
-        validadorCancelamento.forEach(v -> v.validar(dados));
+        var consulta = consultaRepository.findById(id)
+                .orElseThrow(() -> new ValidacaoException(NOT_FOUND_BY_ID));
 
-        var consulta = consultaRepository.getReferenceById(dados.idConsulta());
-        consulta.cancelar(dados.motivoCancelamento());
+        var medico = medicoRepository.findAtivoById(dto.idMedico())
+                .orElse(escolherMedico(ofNullable(
+                        dto.especialidade()).orElseThrow(() -> new ValidacaoException(MUST_BE_FILLED)), dto.data()));
 
-        return ResponseEntity.noContent().build();
+        consulta.setMedico(medico);
+        consulta.setData(dto.data());
+
+        return ResponseEntity.ok().body(mapper.toDTO(consulta));
+    }
+
+    @Override
+    public ResponseEntity<Page<DadosDetalhamentoConsultaDTO>> executeGetMedico(Long id, Pageable paginacao) {
+        return ResponseEntity
+                .ok()
+                .body(consultaRepository
+                        .findAllByMedicoId(id, paginacao)
+                        .map(mapper::toDTO));
+    }
+
+    @Override
+    public ResponseEntity<Page<DadosDetalhamentoConsultaDTO>> executeGetPaciente(Long id, Pageable paginacao) {
+        return ResponseEntity
+                .ok()
+                .body(consultaRepository
+                        .findAllByPacienteId(id, paginacao)
+                        .map(mapper::toDTO));
+    }
+
+    @Override
+    public ResponseEntity<Page<DadosDetalhamentoConsultaDTO>> executeGet(Pageable paginacao) {
+        return ResponseEntity
+                .ok()
+                .body(consultaRepository
+                        .findAll(paginacao)
+                        .map(mapper::toDTO));
     }
 
 
-
-    private Medico escolherMedico(DadosAgendamentoConsultaDTO dados) {
-        if (dados.idMedico() != null){
-            return medicoRepository.getReferenceById(dados.idMedico());
-        }
-
-        if (dados.especialidade() == null){
-            throw new ValidacaoException("Especialidade é obrigatória quando médico não for escolhido!");
-        }
-
-        return medicoRepository.escolherMedicoAleatorioLivreNaData(dados.especialidade(), dados.data());
-
+    private Medico escolherMedico(Especialidade especialidade, LocalDateTime data) {
+        return of(medicoRepository.escolherMedicoAleatorioLivreNaData(especialidade, data))
+                .orElseThrow(() -> new ValidacaoException("Não há médicos disponiveis para data selecionada!"));
     }
 }

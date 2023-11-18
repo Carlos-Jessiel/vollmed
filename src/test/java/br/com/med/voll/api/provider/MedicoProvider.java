@@ -11,7 +11,7 @@ public class MedicoProvider {
 
     public static Medico getEntity() {
         return new Medico(
-                null,
+                1L,
                 "nome",
                 "email@email.com",
                 "12345678910",
