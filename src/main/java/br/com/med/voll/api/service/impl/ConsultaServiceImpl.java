@@ -1,8 +1,8 @@
 package br.com.med.voll.api.service.impl;
 
 import br.com.med.voll.api.dto.consulta.DadosAgendamentoConsultaDTO;
-import br.com.med.voll.api.dto.consulta.DadosDetalhamentoConsultaDTO;
 import br.com.med.voll.api.dto.consulta.DadosCancelamentoConsultaDto;
+import br.com.med.voll.api.dto.consulta.DadosDetalhamentoConsultaDTO;
 import br.com.med.voll.api.infra.execption.ValidacaoException;
 import br.com.med.voll.api.mapper.ConsultaMapper;
 import br.com.med.voll.api.model.medico.Especialidade;
@@ -23,6 +23,8 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static br.com.med.voll.api.infra.DefaultMessage.MUST_BE_FILLED;
+import static br.com.med.voll.api.infra.DefaultMessage.NOT_FOUND;
 import static java.util.Optional.of;
 import static java.util.Optional.ofNullable;
 
@@ -36,8 +38,6 @@ public class ConsultaServiceImpl implements ConsultaService {
     private final List<ValidadorAgendamentoDeConsulta> validadores;
     private final List<ValidadorCancelamentoDeConsulta> validadorCancelamento;
     private final ConsultaMapper mapper;
-    private static final String NOT_FOUND_BY_ID = "Não foi localizado nenhum registro para o id informado.";
-    private static final String MUST_BE_FILLED = "Especialidade é obrigatória quando médico não for escolhido!";
 
     @Override
     @Transactional
@@ -46,10 +46,11 @@ public class ConsultaServiceImpl implements ConsultaService {
 
         var medico = medicoRepository.findAtivoById(dto.idMedico())
                 .orElse(escolherMedico(ofNullable(
-                        dto.especialidade()).orElseThrow(() -> new ValidacaoException(MUST_BE_FILLED)), dto.data()));
+                        dto.especialidade()).orElseThrow(
+                        () -> new ValidacaoException(MUST_BE_FILLED.getMensagem())), dto.data()));
 
         var paciente = pacienteRepository.findById(dto.idPaciente())
-                .orElseThrow(() -> new ValidacaoException(NOT_FOUND_BY_ID));
+                .orElseThrow(() -> new ValidacaoException(NOT_FOUND.getMensagem()));
 
         return ResponseEntity
                 .ok()
@@ -75,11 +76,12 @@ public class ConsultaServiceImpl implements ConsultaService {
         validadores.forEach(v -> v.validar(dto));
 
         var consulta = consultaRepository.findById(id)
-                .orElseThrow(() -> new ValidacaoException(NOT_FOUND_BY_ID));
+                .orElseThrow(() -> new ValidacaoException(NOT_FOUND.getMensagem()));
 
         var medico = medicoRepository.findAtivoById(dto.idMedico())
                 .orElse(escolherMedico(ofNullable(
-                        dto.especialidade()).orElseThrow(() -> new ValidacaoException(MUST_BE_FILLED)), dto.data()));
+                        dto.especialidade()).orElseThrow(
+                        () -> new ValidacaoException(MUST_BE_FILLED.getMensagem())), dto.data()));
 
         consulta.setMedico(medico);
         consulta.setData(dto.data());
@@ -117,6 +119,7 @@ public class ConsultaServiceImpl implements ConsultaService {
 
     private Medico escolherMedico(Especialidade especialidade, LocalDateTime data) {
         return of(medicoRepository.escolherMedicoAleatorioLivreNaData(especialidade, data))
-                .orElseThrow(() -> new ValidacaoException("Não há médicos disponiveis para data selecionada!"));
+                .orElseThrow(() -> new ValidacaoException(
+                        NOT_FOUND.getMensagem("Não há médicos disponiveis para data selecionada!")));
     }
 }

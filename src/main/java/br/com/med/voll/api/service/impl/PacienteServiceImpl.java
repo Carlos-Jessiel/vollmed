@@ -17,13 +17,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import static br.com.med.voll.api.infra.DefaultMessage.*;
+
 @Service
 @RequiredArgsConstructor
 public class PacienteServiceImpl implements PacienteService {
 
     private final PacienteRepository repository;
     private final PacienteMapper mapper;
-    private static final String NOT_FOUND_BY_ID = "Não foi localizado nenhum registro para o id informado.";
 
     @Override
     @Transactional
@@ -49,7 +50,7 @@ public class PacienteServiceImpl implements PacienteService {
     public ResponseEntity<DadosDetalhamentoPacienteDTO> executePut(DadosAtualizacaoPacienteDTO dto) {
         Paciente entity = repository.findById(dto.id())
                 .orElseThrow(
-                        () -> new ValidacaoException(NOT_FOUND_BY_ID));
+                        () -> new ValidacaoException(NOT_FOUND.getMensagem()));
 
         return ResponseEntity
                 .ok()
@@ -60,7 +61,7 @@ public class PacienteServiceImpl implements PacienteService {
     @Transactional
     public ResponseEntity executeDelete(Long id) {
         repository.findById(id)
-                .orElseThrow(() -> new ValidacaoException(NOT_FOUND_BY_ID))
+                .orElseThrow(() -> new ValidacaoException(NOT_FOUND.getMensagem()))
                 .setAtivo(false);
 
         return ResponseEntity.ok().build();
@@ -71,6 +72,7 @@ public class PacienteServiceImpl implements PacienteService {
         return ResponseEntity
                 .ok()
                 .body(mapper.toDTO(
-                        repository.findById(id).orElseThrow(() -> new ValidacaoException(NOT_FOUND_BY_ID))));
+                        repository.findById(id).orElseThrow(
+                                () -> new ValidacaoException(NOT_FOUND.getMensagem()))));
     }
 }
