@@ -1,6 +1,7 @@
 package br.com.med.voll.api.service.validacoes.agendamento;
 
 import br.com.med.voll.api.dto.consulta.DadosAgendamentoConsultaDTO;
+import br.com.med.voll.api.infra.DefaultMessage;
 import br.com.med.voll.api.infra.execption.ValidacaoException;
 import org.springframework.stereotype.Component;
 
@@ -15,7 +16,7 @@ public class ValidarHorarioAgendamento implements ValidadorAgendamentoDeConsulta
         var agora = LocalDateTime.now();
 
         if (Duration.between(agora, dataConsulta).toMinutes() < 30) {
-            throw new ValidacaoException("Consulta deve ser agendada com antecedência mínima de 30 minutos!");
+            throw new ValidacaoException(DefaultMessage.MINIMUM_NOTICE.getMensagem() + " 30 minutos.");
         }
     }
 }

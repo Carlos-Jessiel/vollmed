@@ -120,6 +120,6 @@ public class ConsultaServiceImpl implements ConsultaService {
     private Medico escolherMedico(Especialidade especialidade, LocalDateTime data) {
         return of(medicoRepository.escolherMedicoAleatorioLivreNaData(especialidade, data))
                 .orElseThrow(() -> new ValidacaoException(
-                        NOT_FOUND.getMensagem("Não há médicos disponiveis para data selecionada!")));
+                        NOT_FOUND.getMensagem("Não há médicos disponiveis para data selecionada.")));
     }
 }
