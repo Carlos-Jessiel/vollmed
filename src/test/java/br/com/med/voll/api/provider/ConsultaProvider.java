@@ -1,8 +1,8 @@
 package br.com.med.voll.api.provider;
 
-import br.com.med.voll.api.dto.consulta.*;
-import br.com.med.voll.api.model.consulta.Consulta;
-import br.com.med.voll.api.model.medico.Especialidade;
+import br.com.med.voll.api.model.dto.consulta.*;
+import br.com.med.voll.api.model.entities.Consulta;
+import br.com.med.voll.api.model.entities.Especialidade;
 import br.com.med.voll.api.service.validacoes.cancelamento.MotivoCancelamento;
 
 import java.time.DayOfWeek;
@@ -26,10 +26,8 @@ public class ConsultaProvider {
         );
     }
 
-    public static DadosAgendamentoConsultaDTO getDTO() {
-        return new DadosAgendamentoConsultaDTO(
-                MedicoProvider.getEntity().getId(),
-                PacienteProvider.getEntity().getId(),
+    public static DadosRequestDTO getDTO() {
+        return new DadosRequestDTO(
                 DATE,
                 Especialidade.ORTOPEDIA
         );
@@ -61,17 +59,14 @@ public class ConsultaProvider {
         );
     }
 
-    public static DadosCancelamentoConsultaDto getCancelamentoDTO() {
-        return new DadosCancelamentoConsultaDto(
-                getEntity().getId(),
+    public static DadosCancelamentoConsultaDTO getCancelamentoDTO() {
+        return new DadosCancelamentoConsultaDTO(
                 MotivoCancelamento.OUTROS
         );
     }
 
-    public static DadosAgendamentoConsultaDTO getAtualizacaoDTO() {
-        return new DadosAgendamentoConsultaDTO(
-                null,
-                PacienteProvider.getEntity().getId(),
+    public static DadosRequestDTO getAtualizacaoDTO() {
+        return new DadosRequestDTO(
                 DATE.plusHours(1),
                 Especialidade.ORTOPEDIA
         );

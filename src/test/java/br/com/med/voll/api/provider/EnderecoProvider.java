@@ -1,7 +1,7 @@
 package br.com.med.voll.api.provider;
 
-import br.com.med.voll.api.dto.endereco.DadosEnderecoDTO;
-import br.com.med.voll.api.model.endereco.Endereco;
+import br.com.med.voll.api.model.dto.endereco.DadosEnderecoDTO;
+import br.com.med.voll.api.model.entities.Endereco;
 
 public class EnderecoProvider {
 

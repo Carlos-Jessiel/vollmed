@@ -1,10 +1,10 @@
 package br.com.med.voll.api.mapper;
 
-import br.com.med.voll.api.dto.consulta.DadosAgendamentoConsultaDTO;
-import br.com.med.voll.api.dto.consulta.DadosDetalhamentoConsultaDTO;
-import br.com.med.voll.api.model.consulta.Consulta;
-import br.com.med.voll.api.model.medico.Medico;
-import br.com.med.voll.api.model.paciente.Paciente;
+import br.com.med.voll.api.model.dto.consulta.DadosRequestDTO;
+import br.com.med.voll.api.model.dto.consulta.DadosDetalhamentoConsultaDTO;
+import br.com.med.voll.api.model.entities.Consulta;
+import br.com.med.voll.api.model.entities.Medico;
+import br.com.med.voll.api.model.entities.Paciente;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.NullValuePropertyMappingStrategy;
@@ -13,7 +13,7 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 public interface ConsultaMapper {
 
     @Mapping(target = "id", ignore = true)
-    Consulta toEntity(DadosAgendamentoConsultaDTO dto, Medico medico, Paciente paciente);
+    Consulta toEntity(DadosRequestDTO dto, Medico medico, Paciente paciente);
 
     DadosDetalhamentoConsultaDTO toDTO(Consulta entity);
 }

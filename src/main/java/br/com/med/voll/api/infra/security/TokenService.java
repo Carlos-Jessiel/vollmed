@@ -1,6 +1,6 @@
 package br.com.med.voll.api.infra.security;
 
-import br.com.med.voll.api.model.usuario.Usuario;
+import br.com.med.voll.api.model.entities.Usuario;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;

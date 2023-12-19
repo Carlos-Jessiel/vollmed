@@ -1,8 +1,8 @@
 package br.com.med.voll.api.controller;
 
-import br.com.med.voll.api.dto.medico.DadosAtualizacaoMedicoDTO;
-import br.com.med.voll.api.dto.medico.DadosCadastroMedicoDTO;
-import br.com.med.voll.api.dto.medico.DadosDetalhamentoMedicoDTO;
+import br.com.med.voll.api.model.dto.medico.DadosAtualizacaoMedicoDTO;
+import br.com.med.voll.api.model.dto.medico.DadosCadastroMedicoDTO;
+import br.com.med.voll.api.model.dto.medico.DadosDetalhamentoMedicoDTO;
 import br.com.med.voll.api.provider.MedicoProvider;
 import br.com.med.voll.api.service.impl.MedicoServiceImpl;
 import org.junit.jupiter.api.DisplayName;
@@ -28,7 +28,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @AutoConfigureJsonTesters
 class MedicoControllerTest {
 
-    private static final String ROTA = "/medicos";
+    private static final String ROTA = "/voll-med/v1/medicos";
 
     @Autowired
     private MockMvc mvc;
@@ -48,7 +48,7 @@ class MedicoControllerTest {
     @Test
     @DisplayName("Deveria devolver codigo HTTP 201 indicando cadastro efetuado com sucesso")
     @WithMockUser
-    void cadastrar_Cenario1() throws Exception {
+    public void cadastrar_Cenario1() throws Exception {
         var dadosDetalhamentoMedico = MedicoProvider.getDetalhamentoDTO();
         var dtoMedico = MedicoProvider.getDTO();
 
@@ -78,7 +78,7 @@ class MedicoControllerTest {
     @Test
     @DisplayName("Deveria devolver codigo HTTP 400 quando informações estão inválidas")
     @WithMockUser
-    void cadastrar_Cenario2() throws Exception {
+    public void cadastrar_Cenario2() throws Exception {
         var response =
                 mvc.perform(post(ROTA))
                         .andReturn()
@@ -90,16 +90,16 @@ class MedicoControllerTest {
     @Test
     @DisplayName("Deveria atualizar um registro de médicos")
     @WithMockUser
-    void atualizar_Cenario1() throws Exception {
+    public void atualizar_Cenario1() throws Exception {
         var dtoAtualizcao = MedicoProvider.getAtualizarDTO();
         var dadosDetalhamento = MedicoProvider.getMedicoAtualizadoDTO();
 
-        when(medicoService.executePut(dtoAtualizcao))
+        when(medicoService.executePut(MedicoProvider.getEntity().getId(), dtoAtualizcao))
                 .thenReturn(ResponseEntity
                         .status(HttpStatus.OK)
                         .body(dadosDetalhamento));
 
-        var response = mvc.perform(put(ROTA)
+        var response = mvc.perform(put(ROTA + "/" + MedicoProvider.getEntity().getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(dadosAtualizacaoMeditoJSON.write(
                                 dtoAtualizcao
@@ -120,15 +120,15 @@ class MedicoControllerTest {
     @Test
     @DisplayName("Deveria devolver codigo HTTP 200")
     @WithMockUser
-    void deletar_Cenario1() throws Exception {
-        Long id = 1L;
-        when(medicoService.executeDelete(id))
+    public void deletar_Cenario1() throws Exception {
+
+        when(medicoService.executeDelete(MedicoProvider.getEntity().getId()))
                 .thenReturn(ResponseEntity
                         .ok()
                         .build());
 
         var response =
-                mvc.perform(delete(ROTA + "/" + id))
+                mvc.perform(delete(ROTA + "/" + MedicoProvider.getEntity().getId()))
                         .andReturn()
                         .getResponse();
 
@@ -138,17 +138,17 @@ class MedicoControllerTest {
     @Test
     @DisplayName("Deveria devolver codigo HTTP 200 ao consultar um registro")
     @WithMockUser
-    void detalhar_Cenario1() throws Exception {
+    public void detalhar_Cenario1() throws Exception {
         var responseEsperado = MedicoProvider.getDetalhamentoDTO();
 
-        Long id = 1L;
-        when(medicoService.executeGetOne(id))
+
+        when(medicoService.executeGetOne(MedicoProvider.getEntity().getId()))
                 .thenReturn(ResponseEntity
                         .status(HttpStatus.OK)
                         .body(responseEsperado));
 
         var response =
-                mvc.perform(get(ROTA + "/" + id))
+                mvc.perform(get(ROTA + "/" + MedicoProvider.getEntity().getId()))
                         .andReturn()
                         .getResponse();
 
