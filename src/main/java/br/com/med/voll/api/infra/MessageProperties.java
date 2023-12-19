@@ -6,7 +6,7 @@ public interface MessageProperties {
 
     String VALIDATION_MESSAGES = "ValidationMessages";
 
-    default  String getMensagem() {
+    default String getMensagem() {
         return MessageSourceResourceBundle.getBundle(VALIDATION_MESSAGES).getString(getMessageProperty());
     }
 

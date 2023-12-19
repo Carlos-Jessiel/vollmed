@@ -1,7 +1,7 @@
 package br.com.med.voll.api.repository;
 
-import br.com.med.voll.api.model.medico.Especialidade;
-import br.com.med.voll.api.model.medico.Medico;
+import br.com.med.voll.api.model.entities.Especialidade;
+import br.com.med.voll.api.model.entities.Medico;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

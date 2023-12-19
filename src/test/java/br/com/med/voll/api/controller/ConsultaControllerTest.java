@@ -1,9 +1,11 @@
 package br.com.med.voll.api.controller;
 
-import br.com.med.voll.api.dto.consulta.DadosAgendamentoConsultaDTO;
-import br.com.med.voll.api.dto.consulta.DadosCancelamentoConsultaDto;
-import br.com.med.voll.api.dto.consulta.DadosDetalhamentoConsultaDTO;
+import br.com.med.voll.api.model.dto.consulta.DadosRequestDTO;
+import br.com.med.voll.api.model.dto.consulta.DadosCancelamentoConsultaDTO;
+import br.com.med.voll.api.model.dto.consulta.DadosDetalhamentoConsultaDTO;
 import br.com.med.voll.api.provider.ConsultaProvider;
+import br.com.med.voll.api.provider.MedicoProvider;
+import br.com.med.voll.api.provider.PacienteProvider;
 import br.com.med.voll.api.service.impl.ConsultaServiceImpl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -28,19 +30,19 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @AutoConfigureJsonTesters
 class ConsultaControllerTest {
 
-    private static final String ROTA = "/consultas";
+    private static final String ROTA = "/voll-med/v1/consultas";
 
     @Autowired
     private MockMvc mvc;
 
     @Autowired
-    private JacksonTester<DadosAgendamentoConsultaDTO> dadosAgendamentoConsultaJSON;
+    private JacksonTester<DadosRequestDTO> dadosAgendamentoConsultaJSON;
 
     @Autowired
     private JacksonTester<DadosDetalhamentoConsultaDTO> dadosDetalhamentoConsultaJSON;
 
     @Autowired
-    private JacksonTester<DadosCancelamentoConsultaDto> dadosCancelamentoConsultaJSON;
+    private JacksonTester<DadosCancelamentoConsultaDTO> dadosCancelamentoConsultaJSON;
 
     @MockBean
     private ConsultaServiceImpl consultaService;
@@ -48,9 +50,11 @@ class ConsultaControllerTest {
     @Test
     @DisplayName("Deveria devolver codigo HTTP 400 quando informações estão inválidas")
     @WithMockUser
-    void agendar_Cenario1() throws Exception {
+    public void agendar_Cenario1() throws Exception {
         var response =
-                mvc.perform(post(ROTA))
+                mvc.perform(post(ROTA +
+                        "/agendar/medico/" + MedicoProvider.getEntity().getId() +
+                        "/paciente/" + PacienteProvider.getEntity().getId()))
                         .andReturn()
                         .getResponse();
 
@@ -58,18 +62,23 @@ class ConsultaControllerTest {
     }
 
     @Test
-    @DisplayName("Deveria devolver codigo HTTP 201 quando informações estão válidas")
+    @DisplayName("Deveria devolver codigo HTTP 200 quando informações estão válidas")
     @WithMockUser
-    void agendar_Cenario2() throws Exception {
+    public void agendar_Cenario2() throws Exception {
         var dadosDetalhamentoConsulta = ConsultaProvider.getDetalhamentoDTO();
         var consultaDTO = ConsultaProvider.getDTO();
 
-        when(consultaService.executePost(consultaDTO))
+        when(consultaService.executePost(
+                MedicoProvider.getEntity().getId(),
+                PacienteProvider.getEntity().getId(),
+                consultaDTO))
                 .thenReturn(ResponseEntity.ok()
                         .body(dadosDetalhamentoConsulta));
 
         var response =
-                mvc.perform(post(ROTA)
+                mvc.perform(post(ROTA +
+                                "/agendar/medico/" + MedicoProvider.getEntity().getId() +
+                                "/paciente/" + PacienteProvider.getEntity().getId())
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(dadosAgendamentoConsultaJSON.write(
                                         consultaDTO
@@ -90,16 +99,16 @@ class ConsultaControllerTest {
     @Test
     @DisplayName("Deveria devolver codigo HTTP 200")
     @WithMockUser
-    void deletar_Cenario1() throws Exception {
+    public void deletar_Cenario1() throws Exception {
         var cancelamentoDTO = ConsultaProvider.getCancelamentoDTO();
 
-        when(consultaService.executeDelete(cancelamentoDTO))
+        when(consultaService.executeDelete(ConsultaProvider.getEntity().getId(), cancelamentoDTO))
                 .thenReturn(ResponseEntity
                         .ok()
                         .build());
 
         var response =
-                mvc.perform(delete(ROTA)
+                mvc.perform(delete(ROTA + "/cancelar/" + ConsultaProvider.getEntity().getId())
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(dadosCancelamentoConsultaJSON.write(
                                         cancelamentoDTO
@@ -114,16 +123,23 @@ class ConsultaControllerTest {
     @Test
     @DisplayName("Deveria atualizar um registro de consultas")
     @WithMockUser
-    void atualizar_Cenario1() throws Exception {
+    public void atualizar_Cenario1() throws Exception {
         var dtoAtualizcao = ConsultaProvider.getDTO();
         var dtoDetalhamento = ConsultaProvider.getConsultaAtualizadaDTO();
 
-        when(consultaService.executePut(100L, dtoAtualizcao))
+        when(consultaService.executePut(
+                ConsultaProvider.getEntity().getId(),
+                MedicoProvider.getEntity().getId(),
+                PacienteProvider.getEntity().getId(),
+                dtoAtualizcao))
                 .thenReturn(ResponseEntity
                         .status(HttpStatus.OK)
                         .body(dtoDetalhamento));
 
-        var response = mvc.perform(put(ROTA + "/" + 100L)
+        var response = mvc.perform(put(ROTA +
+                        "/" + ConsultaProvider.getEntity().getId() +
+                        "/medico/" + MedicoProvider.getEntity().getId() +
+                        "/paciente/" + PacienteProvider.getEntity().getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(dadosAgendamentoConsultaJSON.write(
                                 dtoAtualizcao

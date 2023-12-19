@@ -1,12 +1,12 @@
 package br.com.med.voll.api.service.impl;
 
-import br.com.med.voll.api.dto.medico.DadosAtualizacaoMedicoDTO;
-import br.com.med.voll.api.dto.medico.DadosCadastroMedicoDTO;
-import br.com.med.voll.api.dto.medico.DadosDetalhamentoMedicoDTO;
-import br.com.med.voll.api.dto.medico.DadosListagemMedicoDTO;
+import br.com.med.voll.api.model.dto.medico.DadosAtualizacaoMedicoDTO;
+import br.com.med.voll.api.model.dto.medico.DadosCadastroMedicoDTO;
+import br.com.med.voll.api.model.dto.medico.DadosDetalhamentoMedicoDTO;
+import br.com.med.voll.api.model.dto.medico.DadosListagemMedicoDTO;
 import br.com.med.voll.api.infra.execption.ValidacaoException;
 import br.com.med.voll.api.mapper.MedicoMapper;
-import br.com.med.voll.api.model.medico.Medico;
+import br.com.med.voll.api.model.entities.Medico;
 import br.com.med.voll.api.repository.MedicoRepository;
 import br.com.med.voll.api.service.MedicoService;
 import jakarta.transaction.Transactional;
@@ -47,14 +47,14 @@ public class MedicoServiceImpl implements MedicoService {
 
     @Override
     @Transactional
-    public ResponseEntity<DadosDetalhamentoMedicoDTO> executePut(DadosAtualizacaoMedicoDTO dto) {
-        Medico entity = repository.findById(dto.id())
+    public ResponseEntity<DadosDetalhamentoMedicoDTO> executePut(Long id, DadosAtualizacaoMedicoDTO dto) {
+        Medico entity = repository.findById(id)
                 .orElseThrow(
                         () -> new ValidacaoException(NOT_FOUND.getMensagem()));
 
         return ResponseEntity
                 .ok()
-                .body(mapper.toDTO(mapper.atualizar(dto, entity)));
+                .body(mapper.toDTO(mapper.atualizar(id, dto, entity)));
     }
 
     @Override

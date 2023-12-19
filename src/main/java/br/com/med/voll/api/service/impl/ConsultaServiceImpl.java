@@ -1,12 +1,12 @@
 package br.com.med.voll.api.service.impl;
 
-import br.com.med.voll.api.dto.consulta.DadosAgendamentoConsultaDTO;
-import br.com.med.voll.api.dto.consulta.DadosCancelamentoConsultaDto;
-import br.com.med.voll.api.dto.consulta.DadosDetalhamentoConsultaDTO;
+import br.com.med.voll.api.model.dto.consulta.DadosRequestDTO;
+import br.com.med.voll.api.model.dto.consulta.DadosCancelamentoConsultaDTO;
+import br.com.med.voll.api.model.dto.consulta.DadosDetalhamentoConsultaDTO;
 import br.com.med.voll.api.infra.execption.ValidacaoException;
 import br.com.med.voll.api.mapper.ConsultaMapper;
-import br.com.med.voll.api.model.medico.Especialidade;
-import br.com.med.voll.api.model.medico.Medico;
+import br.com.med.voll.api.model.entities.Especialidade;
+import br.com.med.voll.api.model.entities.Medico;
 import br.com.med.voll.api.repository.ConsultaRepository;
 import br.com.med.voll.api.repository.MedicoRepository;
 import br.com.med.voll.api.repository.PacienteRepository;
@@ -41,29 +41,28 @@ public class ConsultaServiceImpl implements ConsultaService {
 
     @Override
     @Transactional
-    public ResponseEntity<DadosDetalhamentoConsultaDTO> executePost(DadosAgendamentoConsultaDTO dto) {
-        validadores.forEach(v -> v.validar(dto));
+    public ResponseEntity<DadosDetalhamentoConsultaDTO> executePost(Long idMedico, Long idPaciente,
+                                                                    DadosRequestDTO dto) {
+        validadores.forEach(v -> v.validar(idMedico, idPaciente, dto));
 
-        var medico = medicoRepository.findAtivoById(dto.idMedico())
+        var medico = medicoRepository.findAtivoById(idMedico)
                 .orElse(escolherMedico(ofNullable(
                         dto.especialidade()).orElseThrow(
                         () -> new ValidacaoException(MUST_BE_FILLED.getMensagem())), dto.data()));
 
-        var paciente = pacienteRepository.findById(dto.idPaciente())
+        var paciente = pacienteRepository.findById(idPaciente)
                 .orElseThrow(() -> new ValidacaoException(NOT_FOUND.getMensagem()));
 
-        return ResponseEntity
-                .ok()
-                .body(mapper.toDTO(consultaRepository.save(mapper.toEntity(dto, medico, paciente))));
+        return ResponseEntity.ok().body(mapper.toDTO(consultaRepository.save(mapper.toEntity(dto, medico, paciente))));
     }
 
     @Override
     @Transactional
-    public ResponseEntity executeDelete(DadosCancelamentoConsultaDto dto) {
-        validadorCancelamento.forEach(v -> v.validar(dto));
+    public ResponseEntity executeDelete(Long idConsulta, DadosCancelamentoConsultaDTO dto) {
+        validadorCancelamento.forEach(v -> v.validar(idConsulta, dto));
 
         consultaRepository
-                .findById(dto.idConsulta())
+                .findById(idConsulta)
                 .get()
                 .setMotivoCancelamento(dto.motivoCancelamento());
 
@@ -72,13 +71,14 @@ public class ConsultaServiceImpl implements ConsultaService {
 
     @Override
     @Transactional
-    public ResponseEntity<DadosDetalhamentoConsultaDTO> executePut(Long id, DadosAgendamentoConsultaDTO dto) {
-        validadores.forEach(v -> v.validar(dto));
+    public ResponseEntity<DadosDetalhamentoConsultaDTO> executePut(Long idConsulta, Long idMedico, Long idPaciente,
+                                                                   DadosRequestDTO dto) {
+        validadores.forEach(v -> v.validar(idMedico, idPaciente, dto));
 
-        var consulta = consultaRepository.findById(id)
+        var consulta = consultaRepository.findById(idConsulta)
                 .orElseThrow(() -> new ValidacaoException(NOT_FOUND.getMensagem()));
 
-        var medico = medicoRepository.findAtivoById(dto.idMedico())
+        var medico = medicoRepository.findAtivoById(idMedico)
                 .orElse(escolherMedico(ofNullable(
                         dto.especialidade()).orElseThrow(
                         () -> new ValidacaoException(MUST_BE_FILLED.getMensagem())), dto.data()));
@@ -94,7 +94,7 @@ public class ConsultaServiceImpl implements ConsultaService {
         return ResponseEntity
                 .ok()
                 .body(consultaRepository
-                        .findAllByMedicoId(id, paginacao)
+                        .findAllConsultaByMedicoId(id, paginacao)
                         .map(mapper::toDTO));
     }
 
@@ -103,7 +103,7 @@ public class ConsultaServiceImpl implements ConsultaService {
         return ResponseEntity
                 .ok()
                 .body(consultaRepository
-                        .findAllByPacienteId(id, paginacao)
+                        .findAllConsultaByPacienteId(id, paginacao)
                         .map(mapper::toDTO));
     }
 

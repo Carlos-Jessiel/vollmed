@@ -1,6 +1,6 @@
 package br.com.med.voll.api.service.validacoes.agendamento;
 
-import br.com.med.voll.api.dto.consulta.DadosAgendamentoConsultaDTO;
+import br.com.med.voll.api.model.dto.consulta.DadosRequestDTO;
 import br.com.med.voll.api.infra.execption.ValidacaoException;
 import org.springframework.stereotype.Component;
 
@@ -11,7 +11,7 @@ import static br.com.med.voll.api.infra.DefaultMessage.OUT_OF_SERVICE;
 @Component
 public class ValidarHorarioFuncionamento implements ValidadorAgendamentoDeConsulta {
 
-    public void validar(DadosAgendamentoConsultaDTO dados) {
+    public void validar(Long idMedico, Long idPaciente, DadosRequestDTO dados) {
         var dataConsulta = dados.data();
 
         var domingo = dataConsulta.getDayOfWeek().equals(DayOfWeek.SUNDAY);

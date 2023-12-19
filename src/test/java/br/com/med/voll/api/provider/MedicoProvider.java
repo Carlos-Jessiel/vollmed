@@ -1,11 +1,11 @@
 package br.com.med.voll.api.provider;
 
-import br.com.med.voll.api.dto.medico.DadosAtualizacaoMedicoDTO;
-import br.com.med.voll.api.dto.medico.DadosCadastroMedicoDTO;
-import br.com.med.voll.api.dto.medico.DadosDetalhamentoMedicoDTO;
-import br.com.med.voll.api.dto.medico.DadosListagemMedicoDTO;
-import br.com.med.voll.api.model.medico.Especialidade;
-import br.com.med.voll.api.model.medico.Medico;
+import br.com.med.voll.api.model.dto.medico.DadosAtualizacaoMedicoDTO;
+import br.com.med.voll.api.model.dto.medico.DadosCadastroMedicoDTO;
+import br.com.med.voll.api.model.dto.medico.DadosDetalhamentoMedicoDTO;
+import br.com.med.voll.api.model.dto.medico.DadosListagemMedicoDTO;
+import br.com.med.voll.api.model.entities.Especialidade;
+import br.com.med.voll.api.model.entities.Medico;
 
 public class MedicoProvider {
 
@@ -57,7 +57,6 @@ public class MedicoProvider {
 
     public static DadosAtualizacaoMedicoDTO getAtualizarDTO() {
         return new DadosAtualizacaoMedicoDTO(
-                1L,
                 "NOME",
                 "00000000000",
                 null

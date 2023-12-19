@@ -1,9 +1,9 @@
 package br.com.med.voll.api.provider;
 
-import br.com.med.voll.api.dto.paciente.DadosAtualizacaoPacienteDTO;
-import br.com.med.voll.api.dto.paciente.DadosCadastroPacienteDTO;
-import br.com.med.voll.api.dto.paciente.DadosDetalhamentoPacienteDTO;
-import br.com.med.voll.api.model.paciente.Paciente;
+import br.com.med.voll.api.model.dto.paciente.DadosAtualizacaoPacienteDTO;
+import br.com.med.voll.api.model.dto.paciente.DadosCadastroPacienteDTO;
+import br.com.med.voll.api.model.dto.paciente.DadosDetalhamentoPacienteDTO;
+import br.com.med.voll.api.model.entities.Paciente;
 
 public class PacienteProvider {
 
@@ -31,7 +31,6 @@ public class PacienteProvider {
 
     public static DadosAtualizacaoPacienteDTO getAtualizarDTO() {
         return new DadosAtualizacaoPacienteDTO(
-                1L,
                 "NOME",
                 "11111111111",
                 null

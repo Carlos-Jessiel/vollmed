@@ -1,6 +1,6 @@
 package br.com.med.voll.api.service.validacoes.agendamento;
 
-import br.com.med.voll.api.dto.consulta.DadosAgendamentoConsultaDTO;
+import br.com.med.voll.api.model.dto.consulta.DadosRequestDTO;
 import br.com.med.voll.api.infra.DefaultMessage;
 import br.com.med.voll.api.infra.execption.ValidacaoException;
 import br.com.med.voll.api.repository.PacienteRepository;
@@ -13,8 +13,8 @@ public class ValidarPacienteAtivo implements ValidadorAgendamentoDeConsulta {
 
     private final PacienteRepository repository;
 
-    public void validar(DadosAgendamentoConsultaDTO dados) {
-        if (!repository.findAtivoById(dados.idPaciente())) {
+    public void validar(Long idMedico, Long idPaciente, DadosRequestDTO dados) {
+        if (!repository.findAtivoById(idPaciente)) {
             throw new ValidacaoException(DefaultMessage.NOT_FOUND.getMensagem());
         }
     }

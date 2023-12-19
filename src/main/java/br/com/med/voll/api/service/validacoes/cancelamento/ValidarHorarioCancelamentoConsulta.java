@@ -1,6 +1,6 @@
 package br.com.med.voll.api.service.validacoes.cancelamento;
 
-import br.com.med.voll.api.dto.consulta.DadosCancelamentoConsultaDto;
+import br.com.med.voll.api.model.dto.consulta.DadosCancelamentoConsultaDTO;
 import br.com.med.voll.api.infra.execption.ValidacaoException;
 import br.com.med.voll.api.repository.ConsultaRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,8 +19,8 @@ public class ValidarHorarioCancelamentoConsulta implements ValidadorCancelamento
     private final ConsultaRepository repository;
 
     @Override
-    public void validar(DadosCancelamentoConsultaDto dados) {
-        var dataConsulta = repository.findById(dados.idConsulta())
+    public void validar(Long idConsulta, DadosCancelamentoConsultaDTO dados) {
+        var dataConsulta = repository.findById(idConsulta)
                 .orElseThrow(() -> new ValidacaoException(NOT_FOUND.getMensagem()))
                 .getData();
         var agora = LocalDateTime.now();
