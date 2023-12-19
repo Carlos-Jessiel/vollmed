@@ -22,7 +22,7 @@ public class SpringDocConfigurations {
                                         .bearerFormat("JWT")))
                 .info(new Info()
                         .title("Voll.med API")
-                        .description("API Rest da aplicação Voll.med, contendo as funcionalidades de CRUD de médicos e de pacientes, além de agendamento e cancelamento de consultas.")
+                        .description("API-REST de clínica fictícia, contendo funcionalidades de CRUD de médicos, pacientes e consultas.")
                         .contact(new Contact()
                                 .name("Carlos Jessiel Nuñez Soares")
                                 .email("c.jessiel_nunez@hotmail.com")

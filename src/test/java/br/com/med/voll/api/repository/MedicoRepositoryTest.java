@@ -1,9 +1,9 @@
 package br.com.med.voll.api.repository;
 
-import br.com.med.voll.api.model.consulta.Consulta;
-import br.com.med.voll.api.model.medico.Especialidade;
-import br.com.med.voll.api.model.medico.Medico;
-import br.com.med.voll.api.model.paciente.Paciente;
+import br.com.med.voll.api.model.entities.Consulta;
+import br.com.med.voll.api.model.entities.Especialidade;
+import br.com.med.voll.api.model.entities.Medico;
+import br.com.med.voll.api.model.entities.Paciente;
 import br.com.med.voll.api.provider.MedicoProvider;
 import br.com.med.voll.api.provider.PacienteProvider;
 import org.junit.jupiter.api.DisplayName;
@@ -33,7 +33,7 @@ class MedicoRepositoryTest {
 
     @Test
     @DisplayName("Deveria devolver null quando unico medico cadastrado nao esta disponivel na data")
-    void escolherMedicoAleatorioLivreNaDataCenario1() {
+    public void escolherMedicoAleatorioLivreNaDataCenario1() {
         //given ou arrange
         var proximaSegundaAs10 = LocalDate.now()
                 .with(TemporalAdjusters.next(DayOfWeek.MONDAY))
@@ -52,7 +52,7 @@ class MedicoRepositoryTest {
 
     @Test
     @DisplayName("Deveria devolver medico quando ele estiver disponivel na data")
-    void escolherMedicoAleatorioLivreNaDataCenario2() {
+    public void escolherMedicoAleatorioLivreNaDataCenario2() {
         //given ou arrange
         var proximaSegundaAs10 = LocalDate.now()
                 .with(TemporalAdjusters.next(DayOfWeek.MONDAY))
